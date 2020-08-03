@@ -697,6 +697,7 @@ let BooklistComponent = class BooklistComponent {
         this.toastr = toastr;
         this.router = router;
         this.title = 'Book List';
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.inputBook = new _bookmodel__WEBPACK_IMPORTED_MODULE_5__["BookModel"]('', '', '', '', '', '', '', '', '', '', '', '', 1, '');
@@ -712,14 +713,11 @@ let BooklistComponent = class BooklistComponent {
             totalItems: 0
         };
         this.route.queryParams.subscribe(x => this.loadPage(x.page || 1));
-        this.http.get('http://localhost:6996/perpustakaan/api/v1/kategori/list')
+        this.http.get(this.uri + 'perpustakaan/api/v1/kategori/list')
             .subscribe(x => {
             this.data = x;
             this.Category = this.data.data;
         });
-        setTimeout(() => {
-            this.loading = false;
-        }, 200);
     }
     onCategoryChange($event) {
         this.route.queryParams.subscribe(x => this.loadPage(x.page || 1));
@@ -751,7 +749,7 @@ let BooklistComponent = class BooklistComponent {
         this.router.navigate(['/books'], { queryParams: { page: event.page } });
     }
     onView(id, template) {
-        this.http.get(`http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/view/` + id)
+        this.http.get(this.uri + 'perpustakaan/api/v1/data_buku/view/' + id)
             .subscribe(x => {
             this.updateBook = x.data;
         });
@@ -762,7 +760,7 @@ let BooklistComponent = class BooklistComponent {
         this.modalRef = this.modalService.show(template);
     }
     onDelete(id) {
-        this.http.delete(`http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/delete/` + id)
+        this.http.delete(this.uri + 'perpustakaan/api/v1/data_buku/delete/' + id)
             .subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {
@@ -783,7 +781,7 @@ let BooklistComponent = class BooklistComponent {
         if (this.selectedCategory === '') {
             this.selectedCategory = 'All';
         }
-        this.http.post(`http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/list`, { category: this.selectedCategory, search: this.search, page: +num, size: 10 })
+        this.http.post(this.uri + 'perpustakaan/api/v1/data_buku/list', { category: this.selectedCategory, search: this.search, page: +num, size: 10 })
             .subscribe(x => {
             console.log(x);
             if (x.data.total_record === 0) {
@@ -799,6 +797,7 @@ let BooklistComponent = class BooklistComponent {
                     totalItems: x.data.total_record
                 };
             }
+            this.loading = false;
         });
     }
     onSubmit(data) {
@@ -818,7 +817,7 @@ let BooklistComponent = class BooklistComponent {
             this.toastr.showError('Data yang dibutuhkan Kosong!', 'Gagal');
         }
         else {
-            this.http.post(`http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/create`, data).subscribe(x => {
+            this.http.post(this.uri + 'perpustakaan/api/v1/data_buku/create', data).subscribe(x => {
                 this.modalRef.hide();
                 if (x.status === true) {
                     this.toastr.showSuccess(x.message, 'Berhasil');
@@ -831,7 +830,7 @@ let BooklistComponent = class BooklistComponent {
         }
     }
     onUpdate(data) {
-        this.http.put(`http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/update`, data).subscribe(x => {
+        this.http.put(this.uri + 'perpustakaan/api/v1/data_buku/update', data).subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {
                 this.toastr.showSuccess(x.message, 'Berhasil');
@@ -843,7 +842,7 @@ let BooklistComponent = class BooklistComponent {
         });
     }
     onSubmitCategory(input) {
-        this.http.get(`http://127.0.0.1:6996/perpustakaan/api/v1/kategori/tambah/` + input)
+        this.http.get(this.uri + 'perpustakaan/api/v1/kategori/tambah/' + input)
             .subscribe(x => {
             console.log(x);
             this.modalRef.hide();
@@ -857,7 +856,7 @@ let BooklistComponent = class BooklistComponent {
         });
     }
     onDeleteCategory(CategoryName) {
-        this.http.delete(`http://127.0.0.1:6996/perpustakaan/api/v1/kategori/hapus/` + CategoryName)
+        this.http.delete(this.uri + 'perpustakaan/api/v1/kategori/hapus/' + CategoryName)
             .subscribe(x => {
             console.log(x);
             if (x.status === true) {
@@ -866,7 +865,7 @@ let BooklistComponent = class BooklistComponent {
             else {
                 this.toastr.showError(x.message, 'Gagal');
             }
-            this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/kategori/list')
+            this.http.get(this.uri + 'perpustakaan/api/v1/kategori/list')
                 .subscribe(dataset => {
                 this.data = dataset;
                 this.Category = this.data.data;
@@ -877,7 +876,7 @@ let BooklistComponent = class BooklistComponent {
         return new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     }
     onDownload() {
-        this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/download', { responseType: 'blob' })
+        this.http.get(this.uri + 'perpustakaan/api/v1/data_buku/download', { responseType: 'blob' })
             .subscribe(res => {
             if (res) {
                 const url = window.URL.createObjectURL(this.returnBlob(res));
@@ -888,7 +887,7 @@ let BooklistComponent = class BooklistComponent {
     openDownloadModal(template) {
         this.modalRef = this.modalService.show(template);
         this.loadingDL = true;
-        this.http.post(`http://localhost:6996/perpustakaan/api/v1/data_buku/createlistbuku`, { category: this.selectedCategory, search: this.search, page: 1, size: this.config.totalItems })
+        this.http.post(this.uri + 'perpustakaan/api/v1/data_buku/createlistbuku', { category: this.selectedCategory, search: this.search, page: 1, size: this.config.totalItems })
             .subscribe(x => {
             console.log(x);
             if (x.status === true) {
@@ -1028,6 +1027,7 @@ let DashboardComponent = class DashboardComponent {
     constructor(http) {
         this.http = http;
         this.title = 'dashboard';
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
     }
     ngOnInit() {
         this.loading = true;
@@ -1036,38 +1036,36 @@ let DashboardComponent = class DashboardComponent {
         this.getBooksCount();
         this.getLoanCount();
         this.getRetunrCount();
-        setTimeout(() => {
-            this.loading = false;
-        }, 300);
     }
     getPeminjaman() {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/berlangsung', { page: 1, size: 5 })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/berlangsung', { page: 1, size: 5 })
             .subscribe(x => {
             this.pageOfItemsPeminjaman = x.data.records;
         });
     }
     getPengembalian() {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/riwayat', { page: 1, size: 5 })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/riwayat', { page: 1, size: 5 })
             .subscribe(x => {
             this.pageOfItemsPengembalian = x.data.records;
         });
     }
     getBooksCount() {
-        this.http.get('http://localhost:6996/perpustakaan/api/v1/summary/buku')
+        this.http.get(this.uri + 'perpustakaan/api/v1/summary/buku')
             .subscribe(x => {
             this.countBook = x.data;
         });
     }
     getLoanCount() {
-        this.http.get('http://localhost:6996/perpustakaan/api/v1/summary/peminjaman')
+        this.http.get(this.uri + 'perpustakaan/api/v1/summary/peminjaman')
             .subscribe(x => {
             this.countLoan = x.data;
         });
     }
     getRetunrCount() {
-        this.http.get('http://localhost:6996/perpustakaan/api/v1/summary/pengembalian')
+        this.http.get(this.uri + 'perpustakaan/api/v1/summary/pengembalian')
             .subscribe(x => {
             this.countReturn = x.data;
+            this.loading = false;
         });
     }
 };
@@ -1128,6 +1126,7 @@ let CurrentloanComponent = class CurrentloanComponent {
         this.modalService = modalService;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -1143,18 +1142,15 @@ let CurrentloanComponent = class CurrentloanComponent {
         };
         this.route.queryParams.subscribe(x => this.getLoanInfo(x.page || 1));
         this.loading = true;
-        setTimeout(() => {
-            this.loading = false;
-        }, 300);
     }
     getMhsInfo() {
-        this.http.get('http://localhost:6996/perpustakaan/api/v1/data_mhs/view/'
+        this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/view/'
             + this.MhsId).subscribe(x => {
             this.dataMhs = x.data;
         });
     }
     getLoanInfo(num) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/berlangsung', { id: this.MhsId, search: this.search, page: +num, size: 10 })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/berlangsung', { id: this.MhsId, search: this.search, page: +num, size: 10 })
             .subscribe(x => {
             if (x.data.total_record === 0) {
                 this.nodata = true;
@@ -1169,6 +1165,7 @@ let CurrentloanComponent = class CurrentloanComponent {
                     totalItems: x.data.total_record
                 };
             }
+            this.loading = false;
         });
     }
     onSearch(searchInput) {
@@ -1199,7 +1196,7 @@ let CurrentloanComponent = class CurrentloanComponent {
         this.modalRef = this.modalService.show(template);
     }
     onSubmitReturn(id) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/kembali', { id_peminjaman: id })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/kembali', { id_peminjaman: id })
             .subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {
@@ -1218,7 +1215,7 @@ let CurrentloanComponent = class CurrentloanComponent {
         return new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     }
     onDownload() {
-        this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/peminjaman/downloadberlangsung', { responseType: 'blob' })
+        this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/downloadberlangsung', { responseType: 'blob' })
             .subscribe(res => {
             if (res) {
                 const url = window.URL.createObjectURL(this.returnBlob(res));
@@ -1229,7 +1226,7 @@ let CurrentloanComponent = class CurrentloanComponent {
     openDownloadModal(template) {
         this.modalRef = this.modalService.show(template);
         this.loadingDL = true;
-        this.http.post(`http://localhost:6996/perpustakaan/api/v1/peminjaman/createlistberlangsung`, { id: this.MhsId, search: this.search, page: 1, size: this.config.totalItems })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/createlistberlangsung', { id: this.MhsId, search: this.search, page: 1, size: this.config.totalItems })
             .subscribe(x => {
             console.log(x);
             if (x.status === true) {
@@ -1311,6 +1308,7 @@ let HistoryloanComponent = class HistoryloanComponent {
         this.modalService = modalService;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -1326,19 +1324,16 @@ let HistoryloanComponent = class HistoryloanComponent {
             totalItems: 0
         };
         this.route.queryParams.subscribe(x => this.getLoanInfo(x.page || 1));
-        setTimeout(() => {
-            this.loading = false;
-        }, 300);
     }
     getMhsInfo() {
-        this.http.get('http://localhost:6996/perpustakaan/api/v1/data_mhs/view/'
+        this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/view/'
             + this.MhsId).subscribe(x => {
             this.dataMhs = x.data;
             console.log(x);
         });
     }
     getLoanInfo(num) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/riwayat', { id: this.MhsId, search: this.search, page: +num, size: 10 })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/riwayat', { id: this.MhsId, search: this.search, page: +num, size: 10 })
             .subscribe(x => {
             if (x.data.total_record === 0) {
                 this.nodata = true;
@@ -1353,6 +1348,7 @@ let HistoryloanComponent = class HistoryloanComponent {
                     totalItems: x.data.total_record
                 };
             }
+            this.loading = false;
         });
     }
     onSearch(searchInput) {
@@ -1389,7 +1385,7 @@ let HistoryloanComponent = class HistoryloanComponent {
         return new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     }
     onDownload() {
-        this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/peminjaman/downloadriwayat', { responseType: 'blob' })
+        this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/downloadriwayat', { responseType: 'blob' })
             .subscribe(res => {
             if (res) {
                 const url = window.URL.createObjectURL(this.returnBlob(res));
@@ -1400,7 +1396,7 @@ let HistoryloanComponent = class HistoryloanComponent {
     openDownloadModal(template) {
         this.modalRef = this.modalService.show(template);
         this.loadingDL = true;
-        this.http.post(`http://localhost:6996/perpustakaan/api/v1/peminjaman/createlistriwayat`, { id: this.MhsId, search: this.search, page: 1, size: this.config.totalItems })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/createlistriwayat', { id: this.MhsId, search: this.search, page: 1, size: this.config.totalItems })
             .subscribe(x => {
             console.log(x);
             if (x.status === true) {
@@ -1482,6 +1478,7 @@ let LoanpageComponent = class LoanpageComponent {
         this.route = route;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -1496,12 +1493,9 @@ let LoanpageComponent = class LoanpageComponent {
             totalItems: 0
         };
         this.route.queryParams.subscribe(x => this.loadPage(x.page || 1));
-        setTimeout(() => {
-            this.loading = false;
-        }, 200);
     }
     loadPage(num) {
-        this.http.post(`http://127.0.0.1:6996/perpustakaan/api/v1/data_mhs/list`, { search: this.search, page: +num, size: 10 }).subscribe(x => {
+        this.http.post(this.uri + 'perpustakaan/api/v1/data_mhs/list', { search: this.search, page: +num, size: 10 }).subscribe(x => {
             if (x.data.total_record === 0) {
                 this.nodata = true;
             }
@@ -1515,6 +1509,7 @@ let LoanpageComponent = class LoanpageComponent {
                     totalItems: x.data.total_record
                 };
             }
+            this.loading = false;
         });
     }
     onSearch(searchInput) {
@@ -1534,7 +1529,7 @@ let LoanpageComponent = class LoanpageComponent {
             this.infoReturn = null;
         }
         else {
-            this.http.get('http://localhost:6996/perpustakaan/api/v1/peminjaman/view/' + id)
+            this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/view/' + id)
                 .subscribe(x => {
                 if (x.status === true) {
                     this.unhide = true;
@@ -1568,7 +1563,7 @@ let LoanpageComponent = class LoanpageComponent {
         }
     }
     onSubmitReturn(id) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/kembali', { id_peminjaman: id })
+        this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/kembali', { id_peminjaman: id })
             .subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {
@@ -1589,7 +1584,7 @@ let LoanpageComponent = class LoanpageComponent {
         return new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     }
     onDownload() {
-        this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/data_mhs/download', { responseType: 'blob' })
+        this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/download', { responseType: 'blob' })
             .subscribe(res => {
             if (res) {
                 const url = window.URL.createObjectURL(this.returnBlob(res));
@@ -1600,7 +1595,7 @@ let LoanpageComponent = class LoanpageComponent {
     openDownloadModal(template) {
         this.modalRef = this.modalService.show(template);
         this.loadingDL = true;
-        this.http.post(`http://localhost:6996/perpustakaan/api/v1/data_mhs/createlistmhs`, { search: this.search, page: 1, size: this.config.totalItems })
+        this.http.post(this.uri + 'perpustakaan/api/v1/data_mhs/createlistmhs', { search: this.search, page: 1, size: this.config.totalItems })
             .subscribe(x => {
             console.log(x);
             if (x.status === true) {
@@ -1679,6 +1674,8 @@ let LoginComponent = class LoginComponent {
         this.http = http;
         this.router = router;
         this.toastr = toastr;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
+        // uri = 'http://localhost:6996/';
         this.loginObj = { password: '', username: '' };
         this.showLoginForm = false;
     }
@@ -1690,7 +1687,7 @@ let LoginComponent = class LoginComponent {
         }
     }
     onLogin() {
-        this.loginSub = this.http.post(`http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/login`, this.loginObj).subscribe(x => {
+        this.loginSub = this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/login', this.loginObj).subscribe(x => {
             const account = x.data;
             if (x.status === true) {
                 this.toastr.showSuccess(x.message, 'Berhasil');
@@ -1890,6 +1887,8 @@ let ReturnlandingpageComponent = class ReturnlandingpageComponent {
         this.route = route;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
+        // uri = this.uri + '';
         this.input = { idMhs: '', idBuku: '' };
         this.object = { mhs_id: '', buku_id: '' };
     }
@@ -1901,7 +1900,7 @@ let ReturnlandingpageComponent = class ReturnlandingpageComponent {
         }
     }
     onInput(template) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/get', { id_mhs: this.object.mhs_id, id_buku: this.object.buku_id })
+        this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/get', { id_mhs: this.object.mhs_id, id_buku: this.object.buku_id })
             .subscribe(x => {
             this.infoReturn = x.data;
             if (x.status === true) {
@@ -1946,7 +1945,7 @@ let ReturnlandingpageComponent = class ReturnlandingpageComponent {
         }
     }
     onSubmitReturn(id) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/set', { id_peminjaman: id })
+        this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/set', { id_peminjaman: id })
             .subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {
@@ -2020,6 +2019,7 @@ let ReturnpageComponent = class ReturnpageComponent {
         this.modalService = modalService;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.nodata = false;
@@ -2032,12 +2032,9 @@ let ReturnpageComponent = class ReturnpageComponent {
             totalItems: 0
         };
         this.route.queryParams.subscribe(x => this.getReturnApproval(x.page || 1));
-        setTimeout(() => {
-            this.loading = false;
-        }, 300);
     }
     getReturnApproval(num) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/adminlist', { id: '', search: '', page: +num, size: 10 })
+        this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/adminlist', { id: '', search: '', page: +num, size: 10 })
             .subscribe(x => {
             if (x.data.records === null) {
                 this.nodata = true;
@@ -2051,6 +2048,7 @@ let ReturnpageComponent = class ReturnpageComponent {
                     totalItems: x.data.total_record
                 };
             }
+            this.loading = false;
         });
     }
     openModal(template, data) {
@@ -2078,7 +2076,7 @@ let ReturnpageComponent = class ReturnpageComponent {
         this.modalRef = this.modalService.show(template);
     }
     onSubmitReturn(id) {
-        this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/admin', { id_peminjaman: id })
+        this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/admin', { id_peminjaman: id })
             .subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {
@@ -2383,6 +2381,7 @@ let UsermanagementComponent = class UsermanagementComponent {
         this.route = route;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -2408,9 +2407,6 @@ let UsermanagementComponent = class UsermanagementComponent {
                 totalItems: 0
             };
             this.route.queryParams.subscribe(x => this.loadPage(x.page || 1));
-            setTimeout(() => {
-                this.loading = false;
-            }, 200);
         }
         else {
             this.toastr.showWarning('Anda tidak memiliki akses untuk laman manajemen', 'Perhatian!');
@@ -2418,7 +2414,7 @@ let UsermanagementComponent = class UsermanagementComponent {
         }
     }
     loadPage(num) {
-        this.http.post(`http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/list`, { search: this.search, page: +num, size: 10 }).subscribe(x => {
+        this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/list', { search: this.search, page: +num, size: 10 }).subscribe(x => {
             this.pager = x.data;
             this.pageOfItems = x.data.records;
             this.config = {
@@ -2426,6 +2422,7 @@ let UsermanagementComponent = class UsermanagementComponent {
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
             };
+            this.loading = false;
         });
     }
     onSearch(searchInput) {
@@ -2455,7 +2452,7 @@ let UsermanagementComponent = class UsermanagementComponent {
             this.toastr.showError('Data yang dibutuhkan Kosong!', 'Gagal');
         }
         else {
-            this.http.post(`http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/create`, data).subscribe(x => {
+            this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/create', data).subscribe(x => {
                 this.modalRef.hide();
                 if (x.status === true) {
                     this.toastr.showSuccess(x.message, 'Berhasil');
@@ -2473,7 +2470,7 @@ let UsermanagementComponent = class UsermanagementComponent {
         this.modalRef = this.modalService.show(template);
     }
     onUpdate(data) {
-        this.http.put(`http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/update`, data).subscribe(x => {
+        this.http.put(this.uri + 'perpustakaan/api/v1/usermanagement/update', data).subscribe(x => {
             console.log(x);
             this.modalRef.hide();
             if (x.status === true) {
@@ -2490,7 +2487,7 @@ let UsermanagementComponent = class UsermanagementComponent {
         this.modalRef = this.modalService.show(template);
     }
     onDelete(id) {
-        this.http.delete(`http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/delete/` + id)
+        this.http.delete(this.uri + 'perpustakaan/api/v1/usermanagement/delete/' + id)
             .subscribe(x => {
             this.modalRef.hide();
             if (x.status === true) {

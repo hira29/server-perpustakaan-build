@@ -1362,6 +1362,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.toastr = toastr;
         this.router = router;
         this.title = 'Book List';
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.inputBook = new _bookmodel__WEBPACK_IMPORTED_MODULE_5__["BookModel"]('', '', '', '', '', '', '', '', '', '', '', '', 1, '');
@@ -1384,13 +1385,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.route.queryParams.subscribe(function (x) {
             return _this.loadPage(x.page || 1);
           });
-          this.http.get('http://localhost:6996/perpustakaan/api/v1/kategori/list').subscribe(function (x) {
+          this.http.get(this.uri + 'perpustakaan/api/v1/kategori/list').subscribe(function (x) {
             _this.data = x;
             _this.Category = _this.data.data;
           });
-          setTimeout(function () {
-            _this.loading = false;
-          }, 200);
         }
       }, {
         key: "onCategoryChange",
@@ -1447,7 +1445,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onView(id, template) {
           var _this4 = this;
 
-          this.http.get("http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/view/" + id).subscribe(function (x) {
+          this.http.get(this.uri + 'perpustakaan/api/v1/data_buku/view/' + id).subscribe(function (x) {
             _this4.updateBook = x.data;
           });
           this.modalRef = this.modalService.show(template);
@@ -1463,7 +1461,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onDelete(id) {
           var _this5 = this;
 
-          this.http["delete"]("http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/delete/" + id).subscribe(function (x) {
+          this.http["delete"](this.uri + 'perpustakaan/api/v1/data_buku/delete/' + id).subscribe(function (x) {
             _this5.modalRef.hide();
 
             if (x.status === true) {
@@ -1492,7 +1490,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             this.selectedCategory = 'All';
           }
 
-          this.http.post("http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/list", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/data_buku/list', {
             category: this.selectedCategory,
             search: this.search,
             page: +num,
@@ -1512,6 +1510,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 totalItems: x.data.total_record
               };
             }
+
+            _this6.loading = false;
           });
         }
       }, {
@@ -1522,7 +1522,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           if (this.inputBook.judul === '' && this.inputBook.edisi === '' && this.inputBook.penerbit === '' && this.inputBook.tahun_terbit === '' && this.inputBook.deskripsi === '' && this.inputBook.pengarang === '' && this.inputBook.umum_res === '' && this.inputBook.bahasa === '' && this.inputBook.isbn === '' && this.inputBook.lokasi === '' && this.inputBook.kota_terbit === '' && this.inputBook.gambar === '' && this.inputBook.klasifikasi === '') {
             this.toastr.showError('Data yang dibutuhkan Kosong!', 'Gagal');
           } else {
-            this.http.post("http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/create", data).subscribe(function (x) {
+            this.http.post(this.uri + 'perpustakaan/api/v1/data_buku/create', data).subscribe(function (x) {
               _this7.modalRef.hide();
 
               if (x.status === true) {
@@ -1540,7 +1540,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onUpdate(data) {
           var _this8 = this;
 
-          this.http.put("http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/update", data).subscribe(function (x) {
+          this.http.put(this.uri + 'perpustakaan/api/v1/data_buku/update', data).subscribe(function (x) {
             _this8.modalRef.hide();
 
             if (x.status === true) {
@@ -1557,7 +1557,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onSubmitCategory(input) {
           var _this9 = this;
 
-          this.http.get("http://127.0.0.1:6996/perpustakaan/api/v1/kategori/tambah/" + input).subscribe(function (x) {
+          this.http.get(this.uri + 'perpustakaan/api/v1/kategori/tambah/' + input).subscribe(function (x) {
             console.log(x);
 
             _this9.modalRef.hide();
@@ -1576,7 +1576,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onDeleteCategory(CategoryName) {
           var _this10 = this;
 
-          this.http["delete"]("http://127.0.0.1:6996/perpustakaan/api/v1/kategori/hapus/" + CategoryName).subscribe(function (x) {
+          this.http["delete"](this.uri + 'perpustakaan/api/v1/kategori/hapus/' + CategoryName).subscribe(function (x) {
             console.log(x);
 
             if (x.status === true) {
@@ -1585,7 +1585,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               _this10.toastr.showError(x.message, 'Gagal');
             }
 
-            _this10.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/kategori/list').subscribe(function (dataset) {
+            _this10.http.get(_this10.uri + 'perpustakaan/api/v1/kategori/list').subscribe(function (dataset) {
               _this10.data = dataset;
               _this10.Category = _this10.data.data;
             });
@@ -1603,7 +1603,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function onDownload() {
           var _this11 = this;
 
-          this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/data_buku/download', {
+          this.http.get(this.uri + 'perpustakaan/api/v1/data_buku/download', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
@@ -1619,7 +1619,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
-          this.http.post("http://localhost:6996/perpustakaan/api/v1/data_buku/createlistbuku", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/data_buku/createlistbuku', {
             category: this.selectedCategory,
             search: this.search,
             page: 1,
@@ -1834,72 +1834,69 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         this.http = http;
         this.title = 'dashboard';
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
       }
 
       _createClass(DashboardComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this13 = this;
-
           this.loading = true;
           this.getPeminjaman();
           this.getPengembalian();
           this.getBooksCount();
           this.getLoanCount();
           this.getRetunrCount();
-          setTimeout(function () {
-            _this13.loading = false;
-          }, 300);
         }
       }, {
         key: "getPeminjaman",
         value: function getPeminjaman() {
-          var _this14 = this;
+          var _this13 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/berlangsung', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/berlangsung', {
             page: 1,
             size: 5
           }).subscribe(function (x) {
-            _this14.pageOfItemsPeminjaman = x.data.records;
+            _this13.pageOfItemsPeminjaman = x.data.records;
           });
         }
       }, {
         key: "getPengembalian",
         value: function getPengembalian() {
-          var _this15 = this;
+          var _this14 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/riwayat', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/riwayat', {
             page: 1,
             size: 5
           }).subscribe(function (x) {
-            _this15.pageOfItemsPengembalian = x.data.records;
+            _this14.pageOfItemsPengembalian = x.data.records;
           });
         }
       }, {
         key: "getBooksCount",
         value: function getBooksCount() {
-          var _this16 = this;
+          var _this15 = this;
 
-          this.http.get('http://localhost:6996/perpustakaan/api/v1/summary/buku').subscribe(function (x) {
-            _this16.countBook = x.data;
+          this.http.get(this.uri + 'perpustakaan/api/v1/summary/buku').subscribe(function (x) {
+            _this15.countBook = x.data;
           });
         }
       }, {
         key: "getLoanCount",
         value: function getLoanCount() {
-          var _this17 = this;
+          var _this16 = this;
 
-          this.http.get('http://localhost:6996/perpustakaan/api/v1/summary/peminjaman').subscribe(function (x) {
-            _this17.countLoan = x.data;
+          this.http.get(this.uri + 'perpustakaan/api/v1/summary/peminjaman').subscribe(function (x) {
+            _this16.countLoan = x.data;
           });
         }
       }, {
         key: "getRetunrCount",
         value: function getRetunrCount() {
-          var _this18 = this;
+          var _this17 = this;
 
-          this.http.get('http://localhost:6996/perpustakaan/api/v1/summary/pengembalian').subscribe(function (x) {
-            _this18.countReturn = x.data;
+          this.http.get(this.uri + 'perpustakaan/api/v1/summary/pengembalian').subscribe(function (x) {
+            _this17.countReturn = x.data;
+            _this17.loading = false;
           });
         }
       }]);
@@ -2010,6 +2007,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.modalService = modalService;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -2019,7 +2017,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(CurrentloanComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this19 = this;
+          var _this18 = this;
 
           this.MhsId = this.route.snapshot.paramMap.get('id');
           this.getMhsInfo();
@@ -2029,54 +2027,53 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this19.getLoanInfo(x.page || 1);
+            return _this18.getLoanInfo(x.page || 1);
           });
           this.loading = true;
-          setTimeout(function () {
-            _this19.loading = false;
-          }, 300);
         }
       }, {
         key: "getMhsInfo",
         value: function getMhsInfo() {
-          var _this20 = this;
+          var _this19 = this;
 
-          this.http.get('http://localhost:6996/perpustakaan/api/v1/data_mhs/view/' + this.MhsId).subscribe(function (x) {
-            _this20.dataMhs = x.data;
+          this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/view/' + this.MhsId).subscribe(function (x) {
+            _this19.dataMhs = x.data;
           });
         }
       }, {
         key: "getLoanInfo",
         value: function getLoanInfo(num) {
-          var _this21 = this;
+          var _this20 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/berlangsung', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/berlangsung', {
             id: this.MhsId,
             search: this.search,
             page: +num,
             size: 10
           }).subscribe(function (x) {
             if (x.data.total_record === 0) {
-              _this21.nodata = true;
+              _this20.nodata = true;
             } else {
-              _this21.nodata = false;
-              _this21.pager = x.data;
-              _this21.pageOfItems = x.data.records;
-              _this21.config = {
+              _this20.nodata = false;
+              _this20.pager = x.data;
+              _this20.pageOfItems = x.data.records;
+              _this20.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
+
+            _this20.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this22 = this;
+          var _this21 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this22.getLoanInfo(x.page || 1);
+            return _this21.getLoanInfo(x.page || 1);
           });
         }
       }, {
@@ -2109,20 +2106,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this23 = this;
+          var _this22 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/kembali', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/kembali', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this23.modalRef.hide();
+            _this22.modalRef.hide();
 
             if (x.status === true) {
-              _this23.toastr.showSuccess(x.message, 'Berhasil');
+              _this22.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this23.toastr.showError(x.message, 'Gagal');
+              _this22.toastr.showError(x.message, 'Gagal');
             }
 
-            _this23.ngOnInit();
+            _this22.ngOnInit();
           });
         }
       }, {
@@ -2144,13 +2141,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDownload",
         value: function onDownload() {
-          var _this24 = this;
+          var _this23 = this;
 
-          this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/peminjaman/downloadberlangsung', {
+          this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/downloadberlangsung', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
-              var url = window.URL.createObjectURL(_this24.returnBlob(res));
+              var url = window.URL.createObjectURL(_this23.returnBlob(res));
               window.open(url);
             }
           });
@@ -2158,11 +2155,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "openDownloadModal",
         value: function openDownloadModal(template) {
-          var _this25 = this;
+          var _this24 = this;
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
-          this.http.post("http://localhost:6996/perpustakaan/api/v1/peminjaman/createlistberlangsung", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/createlistberlangsung', {
             id: this.MhsId,
             search: this.search,
             page: 1,
@@ -2171,19 +2168,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(x);
 
             if (x.status === true) {
-              if (_this25.nodata === false) {
+              if (_this24.nodata === false) {
                 setTimeout(function () {
-                  _this25.loadingDL = false;
+                  _this24.loadingDL = false;
                 }, 1000);
 
-                _this25.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
+                _this24.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
               } else {
-                _this25.modalRef.hide();
+                _this24.modalRef.hide();
 
-                _this25.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
+                _this24.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
               }
             } else {
-              _this25.toastr.showError('Data gagal Diolah', 'Gagal');
+              _this24.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
         }
@@ -2303,6 +2300,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.modalService = modalService;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -2312,7 +2310,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(HistoryloanComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this26 = this;
+          var _this25 = this;
 
           this.loading = true;
           this.MhsId = this.route.snapshot.paramMap.get('id');
@@ -2323,54 +2321,53 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this26.getLoanInfo(x.page || 1);
+            return _this25.getLoanInfo(x.page || 1);
           });
-          setTimeout(function () {
-            _this26.loading = false;
-          }, 300);
         }
       }, {
         key: "getMhsInfo",
         value: function getMhsInfo() {
-          var _this27 = this;
+          var _this26 = this;
 
-          this.http.get('http://localhost:6996/perpustakaan/api/v1/data_mhs/view/' + this.MhsId).subscribe(function (x) {
-            _this27.dataMhs = x.data;
+          this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/view/' + this.MhsId).subscribe(function (x) {
+            _this26.dataMhs = x.data;
             console.log(x);
           });
         }
       }, {
         key: "getLoanInfo",
         value: function getLoanInfo(num) {
-          var _this28 = this;
+          var _this27 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/riwayat', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/riwayat', {
             id: this.MhsId,
             search: this.search,
             page: +num,
             size: 10
           }).subscribe(function (x) {
             if (x.data.total_record === 0) {
-              _this28.nodata = true;
+              _this27.nodata = true;
             } else {
-              _this28.nodata = false;
-              _this28.pager = x.data;
-              _this28.pageOfItems = x.data.records;
-              _this28.config = {
+              _this27.nodata = false;
+              _this27.pager = x.data;
+              _this27.pageOfItems = x.data.records;
+              _this27.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
+
+            _this27.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this29 = this;
+          var _this28 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this29.getLoanInfo(x.page || 1);
+            return _this28.getLoanInfo(x.page || 1);
           });
         }
       }, {
@@ -2419,13 +2416,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDownload",
         value: function onDownload() {
-          var _this30 = this;
+          var _this29 = this;
 
-          this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/peminjaman/downloadriwayat', {
+          this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/downloadriwayat', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
-              var url = window.URL.createObjectURL(_this30.returnBlob(res));
+              var url = window.URL.createObjectURL(_this29.returnBlob(res));
               window.open(url);
             }
           });
@@ -2433,11 +2430,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "openDownloadModal",
         value: function openDownloadModal(template) {
-          var _this31 = this;
+          var _this30 = this;
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
-          this.http.post("http://localhost:6996/perpustakaan/api/v1/peminjaman/createlistriwayat", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/createlistriwayat', {
             id: this.MhsId,
             search: this.search,
             page: 1,
@@ -2446,19 +2443,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(x);
 
             if (x.status === true) {
-              if (_this31.nodata === false) {
+              if (_this30.nodata === false) {
                 setTimeout(function () {
-                  _this31.loadingDL = false;
+                  _this30.loadingDL = false;
                 }, 1000);
 
-                _this31.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
+                _this30.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
               } else {
-                _this31.modalRef.hide();
+                _this30.modalRef.hide();
 
-                _this31.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
+                _this30.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
               }
             } else {
-              _this31.toastr.showError('Data gagal Diolah', 'Gagal');
+              _this30.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
         }
@@ -2578,6 +2575,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.route = route;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -2588,7 +2586,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(LoanpageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this32 = this;
+          var _this31 = this;
 
           this.loading = true;
           this.config = {
@@ -2597,43 +2595,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this32.loadPage(x.page || 1);
+            return _this31.loadPage(x.page || 1);
           });
-          setTimeout(function () {
-            _this32.loading = false;
-          }, 200);
         }
       }, {
         key: "loadPage",
         value: function loadPage(num) {
-          var _this33 = this;
+          var _this32 = this;
 
-          this.http.post("http://127.0.0.1:6996/perpustakaan/api/v1/data_mhs/list", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/data_mhs/list', {
             search: this.search,
             page: +num,
             size: 10
           }).subscribe(function (x) {
             if (x.data.total_record === 0) {
-              _this33.nodata = true;
+              _this32.nodata = true;
             } else {
-              _this33.nodata = false;
-              _this33.pager = x.data;
-              _this33.pageOfItems = x.data.records;
-              _this33.config = {
+              _this32.nodata = false;
+              _this32.pager = x.data;
+              _this32.pageOfItems = x.data.records;
+              _this32.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
+
+            _this32.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this34 = this;
+          var _this33 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this34.loadPage(x.page || 1);
+            return _this33.loadPage(x.page || 1);
           });
         }
       }, {
@@ -2651,16 +2648,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getData",
         value: function getData(id) {
-          var _this35 = this;
+          var _this34 = this;
 
           if (id === '') {
             this.unhide = false;
             this.infoReturn = null;
           } else {
-            this.http.get('http://localhost:6996/perpustakaan/api/v1/peminjaman/view/' + id).subscribe(function (x) {
+            this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/view/' + id).subscribe(function (x) {
               if (x.status === true) {
-                _this35.unhide = true;
-                _this35.infoReturn = x.data;
+                _this34.unhide = true;
+                _this34.infoReturn = x.data;
                 var Today = new Date();
                 var startDate = new Date(x.data.data_peminjaman.tanggal_peminjaman);
                 var endDate = new Date(x.data.data_peminjaman.tanggal_pengembalian);
@@ -2674,17 +2671,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 time = Math.round(time);
 
                 if (time <= 0) {
-                  _this35.infoTime = 'Tidak Terlambat';
-                  _this35.lateTime = false;
+                  _this34.infoTime = 'Tidak Terlambat';
+                  _this34.lateTime = false;
                 } else {
-                  _this35.infoTime = 'Terlambat ' + time + ' Hari';
-                  _this35.lateTime = true;
+                  _this34.infoTime = 'Terlambat ' + time + ' Hari';
+                  _this34.lateTime = true;
 
-                  _this35.toastr.showWarning('ID ' + ' terlambat ' + time + ' Hari', 'Warning!');
+                  _this34.toastr.showWarning('ID ' + ' terlambat ' + time + ' Hari', 'Warning!');
                 }
               } else {
-                _this35.unhide = false;
-                _this35.infoReturn = null;
+                _this34.unhide = false;
+                _this34.infoReturn = null;
               }
             });
           }
@@ -2692,23 +2689,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this36 = this;
+          var _this35 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/peminjaman/kembali', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/kembali', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this36.modalRef.hide();
+            _this35.modalRef.hide();
 
             if (x.status === true) {
-              _this36.toastr.showSuccess(x.message, 'Berhasil');
+              _this35.toastr.showSuccess(x.message, 'Berhasil');
 
-              _this36.unhide = false;
-              _this36.infoReturn = null;
+              _this35.unhide = false;
+              _this35.infoReturn = null;
             } else {
-              _this36.toastr.showError(x.message, 'Gagal');
+              _this35.toastr.showError(x.message, 'Gagal');
             }
 
-            _this36.ngOnInit();
+            _this35.ngOnInit();
           });
         }
       }, {
@@ -2730,13 +2727,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDownload",
         value: function onDownload() {
-          var _this37 = this;
+          var _this36 = this;
 
-          this.http.get('http://127.0.0.1:6996/perpustakaan/api/v1/data_mhs/download', {
+          this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/download', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
-              var url = window.URL.createObjectURL(_this37.returnBlob(res));
+              var url = window.URL.createObjectURL(_this36.returnBlob(res));
               window.open(url);
             }
           });
@@ -2744,11 +2741,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "openDownloadModal",
         value: function openDownloadModal(template) {
-          var _this38 = this;
+          var _this37 = this;
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
-          this.http.post("http://localhost:6996/perpustakaan/api/v1/data_mhs/createlistmhs", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/data_mhs/createlistmhs', {
             search: this.search,
             page: 1,
             size: this.config.totalItems
@@ -2757,12 +2754,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
             if (x.status === true) {
               setTimeout(function () {
-                _this38.loadingDL = false;
+                _this37.loadingDL = false;
               }, 1000);
 
-              _this38.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
+              _this37.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
             } else {
-              _this38.toastr.showError('Data gagal Diolah', 'Gagal');
+              _this37.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
         }
@@ -2891,6 +2888,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.http = http;
         this.router = router;
         this.toastr = toastr;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/'; // uri = 'http://localhost:6996/';
+
         this.loginObj = {
           password: '',
           username: ''
@@ -2911,20 +2910,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onLogin",
         value: function onLogin() {
-          var _this39 = this;
+          var _this38 = this;
 
-          this.loginSub = this.http.post("http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/login", this.loginObj).subscribe(function (x) {
+          this.loginSub = this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/login', this.loginObj).subscribe(function (x) {
             var account = x.data;
 
             if (x.status === true) {
-              _this39.toastr.showSuccess(x.message, 'Berhasil');
+              _this38.toastr.showSuccess(x.message, 'Berhasil');
 
               var enc = Object(src_app_shared_security_helper__WEBPACK_IMPORTED_MODULE_5__["dataEncryption"])(account);
               localStorage.setItem(_app_config_app_config__WEBPACK_IMPORTED_MODULE_4__["_app_config"].localstorage_prefix + 'user', enc);
 
-              _this39.router.navigate(['/dashboard']);
+              _this38.router.navigate(['/dashboard']);
             } else {
-              _this39.toastr.showError(x.message, 'Gagal');
+              _this38.toastr.showError(x.message, 'Gagal');
             }
           });
         }
@@ -3264,6 +3263,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.route = route;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/'; // uri = this.uri + '';
+
         this.input = {
           idMhs: '',
           idBuku: ''
@@ -3287,13 +3288,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onInput",
         value: function onInput(template) {
-          var _this40 = this;
+          var _this39 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/get', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/get', {
             id_mhs: this.object.mhs_id,
             id_buku: this.object.buku_id
           }).subscribe(function (x) {
-            _this40.infoReturn = x.data;
+            _this39.infoReturn = x.data;
 
             if (x.status === true) {
               var Today = new Date();
@@ -3309,22 +3310,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               time = Math.round(time);
 
               if (time <= 0) {
-                _this40.infoTime = 'Tidak Terlambat';
-                _this40.lateTime = false;
+                _this39.infoTime = 'Tidak Terlambat';
+                _this39.lateTime = false;
               } else {
-                _this40.infoTime = 'Terlambat ' + time + ' Hari';
-                _this40.lateTime = true;
+                _this39.infoTime = 'Terlambat ' + time + ' Hari';
+                _this39.lateTime = true;
 
-                _this40.toastr.showWarning('ID ' + _this40.infoReturn.detail_mhs.mhs_id + ' terlambat ' + time + ' Hari', 'Warning!');
+                _this39.toastr.showWarning('ID ' + _this39.infoReturn.detail_mhs.mhs_id + ' terlambat ' + time + ' Hari', 'Warning!');
               }
 
-              _this40.toastr.showSuccess(x.message, 'Berhasil');
+              _this39.toastr.showSuccess(x.message, 'Berhasil');
 
-              _this40.modalRef = _this40.modalService.show(template);
+              _this39.modalRef = _this39.modalService.show(template);
             } else {
-              _this40.toastr.showWarning(x.message, 'Perhatian!');
+              _this39.toastr.showWarning(x.message, 'Perhatian!');
 
-              _this40.ngOnInit();
+              _this39.ngOnInit();
             }
           });
         }
@@ -3348,20 +3349,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this41 = this;
+          var _this40 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/set', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/set', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this41.modalRef.hide();
+            _this40.modalRef.hide();
 
             if (x.status === true) {
-              _this41.toastr.showSuccess(x.message, 'Berhasil');
+              _this40.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this41.toastr.showError(x.message, 'Gagal');
+              _this40.toastr.showError(x.message, 'Gagal');
             }
 
-            _this41.ngOnInit();
+            _this40.ngOnInit();
           });
         }
       }]);
@@ -3480,6 +3481,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.modalService = modalService;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.nodata = false;
@@ -3488,7 +3490,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(ReturnpageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this42 = this;
+          var _this41 = this;
 
           this.loading = true;
           this.config = {
@@ -3497,34 +3499,33 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this42.getReturnApproval(x.page || 1);
+            return _this41.getReturnApproval(x.page || 1);
           });
-          setTimeout(function () {
-            _this42.loading = false;
-          }, 300);
         }
       }, {
         key: "getReturnApproval",
         value: function getReturnApproval(num) {
-          var _this43 = this;
+          var _this42 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/adminlist', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/adminlist', {
             id: '',
             search: '',
             page: +num,
             size: 10
           }).subscribe(function (x) {
             if (x.data.records === null) {
-              _this43.nodata = true;
+              _this42.nodata = true;
             } else {
-              _this43.pager = x.data;
-              _this43.pageOfItems = x.data.records;
-              _this43.config = {
+              _this42.pager = x.data;
+              _this42.pageOfItems = x.data.records;
+              _this42.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
+
+            _this42.loading = false;
           });
         }
       }, {
@@ -3557,20 +3558,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this44 = this;
+          var _this43 = this;
 
-          this.http.post('http://localhost:6996/perpustakaan/api/v1/pengembalian/admin', {
+          this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/admin', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this44.modalRef.hide();
+            _this43.modalRef.hide();
 
             if (x.status === true) {
-              _this44.toastr.showSuccess(x.message, 'Berhasil');
+              _this43.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this44.toastr.showError(x.message, 'Gagal');
+              _this43.toastr.showError(x.message, 'Gagal');
             }
 
-            _this44.ngOnInit();
+            _this43.ngOnInit();
           });
         }
       }, {
@@ -4160,6 +4161,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.route = route;
         this.toastr = toastr;
         this.router = router;
+        this.uri = 'https://lib-ws-mdb.herokuapp.com/';
         this.pager = {};
         this.pageOfItems = [];
         this.loading = true;
@@ -4172,7 +4174,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(UsermanagementComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this45 = this;
+          var _this44 = this;
 
           var acc = localStorage.getItem(_app_config_app_config__WEBPACK_IMPORTED_MODULE_7__["_app_config"].localstorage_prefix + 'user');
 
@@ -4195,11 +4197,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               totalItems: 0
             };
             this.route.queryParams.subscribe(function (x) {
-              return _this45.loadPage(x.page || 1);
+              return _this44.loadPage(x.page || 1);
             });
-            setTimeout(function () {
-              _this45.loading = false;
-            }, 200);
           } else {
             this.toastr.showWarning('Anda tidak memiliki akses untuk laman manajemen', 'Perhatian!');
             this.router.navigate(['/dashboard']);
@@ -4208,29 +4207,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "loadPage",
         value: function loadPage(num) {
-          var _this46 = this;
+          var _this45 = this;
 
-          this.http.post("http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/list", {
+          this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/list', {
             search: this.search,
             page: +num,
             size: 10
           }).subscribe(function (x) {
-            _this46.pager = x.data;
-            _this46.pageOfItems = x.data.records;
-            _this46.config = {
+            _this45.pager = x.data;
+            _this45.pageOfItems = x.data.records;
+            _this45.config = {
               itemsPerPage: x.data.limit,
               currentPage: x.data.page,
               totalItems: x.data.total_record
             };
+            _this45.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this47 = this;
+          var _this46 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this47.loadPage(x.page || 1);
+            return _this46.loadPage(x.page || 1);
           });
         }
       }, {
@@ -4254,21 +4254,21 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmit",
         value: function onSubmit(data) {
-          var _this48 = this;
+          var _this47 = this;
 
           if (this.inputUser.nama === '' && this.inputUser.username === '' && this.inputUser.password === '' && this.inputUser.role === ' ' && this.inputUser.email === '' && this.inputUser.Phone === '') {
             this.toastr.showError('Data yang dibutuhkan Kosong!', 'Gagal');
           } else {
-            this.http.post("http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/create", data).subscribe(function (x) {
-              _this48.modalRef.hide();
+            this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/create', data).subscribe(function (x) {
+              _this47.modalRef.hide();
 
               if (x.status === true) {
-                _this48.toastr.showSuccess(x.message, 'Berhasil');
+                _this47.toastr.showSuccess(x.message, 'Berhasil');
               } else {
-                _this48.toastr.showError(x.message, 'Gagal');
+                _this47.toastr.showError(x.message, 'Gagal');
               }
 
-              _this48.ngOnInit();
+              _this47.ngOnInit();
             });
           }
         }
@@ -4282,20 +4282,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onUpdate",
         value: function onUpdate(data) {
-          var _this49 = this;
+          var _this48 = this;
 
-          this.http.put("http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/update", data).subscribe(function (x) {
+          this.http.put(this.uri + 'perpustakaan/api/v1/usermanagement/update', data).subscribe(function (x) {
             console.log(x);
 
-            _this49.modalRef.hide();
+            _this48.modalRef.hide();
 
             if (x.status === true) {
-              _this49.toastr.showSuccess(x.message, 'Berhasil');
+              _this48.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this49.toastr.showError(x.message, 'Gagal');
+              _this48.toastr.showError(x.message, 'Gagal');
             }
 
-            _this49.ngOnInit();
+            _this48.ngOnInit();
           });
         }
       }, {
@@ -4307,20 +4307,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDelete",
         value: function onDelete(id) {
-          var _this50 = this;
+          var _this49 = this;
 
-          this.http["delete"]("http://127.0.0.1:6996/perpustakaan/api/v1/usermanagement/delete/" + id).subscribe(function (x) {
-            _this50.modalRef.hide();
+          this.http["delete"](this.uri + 'perpustakaan/api/v1/usermanagement/delete/' + id).subscribe(function (x) {
+            _this49.modalRef.hide();
 
             if (x.status === true) {
-              _this50.toastr.showSuccess(x.message, 'Berhasil');
+              _this49.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this50.toastr.showError(x.message, 'Gagal');
+              _this49.toastr.showError(x.message, 'Gagal');
             }
 
-            _this50.ngOnInit();
+            _this49.ngOnInit();
 
-            _this50.deleteID = '';
+            _this49.deleteID = '';
           });
         }
       }, {
