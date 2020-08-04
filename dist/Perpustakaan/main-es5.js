@@ -83,7 +83,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div id=\"navbar\" class=\"header-container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-lg-6 col-md-6 col-sm-6 left-navbar\">\r\n      <h2>Daftar Buku</h2>\r\n    </div>\r\n    <div class=\"col-lg-6 col-md-6 col-sm-6 right-navbar\">\r\n      <button class=\"btn btn-icon btn-new-menu\" style=\"color: #fff;margin-right: 20px; background-color: #107c41; box-shadow: 0 0 0 0 rgba(34,36,38,.15)\"\r\n              (click)=\"openDownloadModal(DownloadTemplate)\">\r\n        <i class=\"download icon\"></i>\r\n        Unduh Excel\r\n      </button>\r\n      <button class=\"btn btn-primary btn-icon btn-new-menu\" (click)=\"openModal(template)\">\r\n        <i class=\"plus icon\"></i>\r\n        Tambahkan Buku\r\n      </button>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div *ngIf=\"loading;else loads\" class=\"ui segment\" style=\"padding: 200px 0 0 0 \">\r\n  <div class=\"ui active inverted dimmer\">\r\n    <div class=\"ui large text loader\">Loading</div>\r\n  </div>\r\n</div>\r\n\r\n<ng-template #loads>\r\n\r\n  <div class=\"mt-3 pb-0\" style=\"width: 100%\">\r\n    <div class=\"row align-self-center\" style=\"margin-top: 20px; z-index: 98;\">\r\n      <div class=\"col-xl-8 col-lg-8 col-md-8 col-sm-8\">\r\n        <div class=\"category\" style=\"display: flex\">\r\n          <ng-select [items]=\"Category\"\r\n                     bindLabel=\"kategori\"\r\n                     placeholder=\"Kategori...\"\r\n                     autofocus\r\n                     bindValue=\"kategori\"\r\n                     [(ngModel)]=\"selectedCategory\"\r\n                     (change)=\"onCategoryChange($event)\"\r\n                     style=\"width: 120%\">\r\n          </ng-select>\r\n          <div class=\"ui icon button\" style=\"margin-left: 5px\" (click)=\"openModal(CategoryTemplate)\">\r\n            <i class=\"edit outline icon\"></i>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-xl-4 col-lg-4 col-md-4 col-sm-4\">\r\n        <div class=\"ui search\">\r\n          <input class=\"prompt\" style=\"width: 100%\" type=\"text\" placeholder=\"Mencari buku...\" [(ngModel)]=\"search\" (keyup)=\"onSearch(search)\" (search)=\"onSearch(search)\">\r\n          <div class=\"results\"></div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row align-self-center\">\r\n    </div>\r\n  </div>\r\n\r\n  <div *ngIf=\"nodata; else theredata\" class=\"card\" style=\"margin-top: 10px; padding: 10px\">\r\n    <div style=\"text-align:center ;\">\r\n      <p class=\"ml-2\" style=\"font-size: 18px; padding: 2rem;\">Pencarian tidak ditemukan!</p>\r\n    </div>\r\n  </div>\r\n\r\n  <ng-template #theredata>\r\n    <table class=\"ui celled padded table\">\r\n      <thead>\r\n      <tr><th class=\"single line\">ID Buku</th>\r\n        <th>Judul</th>\r\n        <th>Pengarang</th>\r\n        <th>Penerbit</th>\r\n        <th>Tahun Terbit</th>\r\n        <th>Klasifikasi</th>\r\n        <th>Kategori</th>\r\n        <th>Umum/Res</th>\r\n        <th>Bahasa</th>\r\n        <th>Lokasi</th>\r\n        <th>Stok</th>\r\n        <th>Edit</th>\r\n      </tr></thead>\r\n      <tbody>\r\n      <!--  <tr *ngFor=\"let item of pageOfItems | paginate: config\">-->\r\n      <tr *ngFor=\"let item of pageOfItems\">\r\n        <td style=\"text-align: center; margin: 0 auto\"><img src=\"{{item.gambar}}\" style=\"height: 100px\"><div>{{item.buku_id}}</div></td>\r\n        <td>{{item.judul}}</td>\r\n        <td>{{item.pengarang}}</td>\r\n        <td>{{item.penerbit}}</td>\r\n        <td>{{item.tahun_terbit}}</td>\r\n        <td>{{item.klasifikasi}}</td>\r\n        <td>{{item.kategori}}</td>\r\n        <td>{{item.umum_res}}</td>\r\n        <td>{{item.bahasa}}</td>\r\n        <td>{{item.lokasi}}</td>\r\n        <td>{{item.stok}}</td>\r\n        <td>\r\n          <div style=\"display: block\">\r\n            <a (click)=\"onView(item.buku_id, update)\"><i class=\"edit outline icon\"></i></a>\r\n            <a></a>\r\n            <a (click)=\"onModalDelete(item.buku_id, delete)\"><i class=\"trash alternate outline icon\"></i></a>\r\n          </div>\r\n        </td>\r\n      </tr>\r\n      </tbody>\r\n      <tfoot>\r\n      <tr><th colspan=\"12\">\r\n        <pagination previousText=\"&lsaquo;\" nextText=\"&rsaquo;\" firstText=\"&laquo;\" lastText=\"&raquo;\" [boundaryLinks]=\"true\"\r\n                    [totalItems]=\"config.totalItems\" [itemsPerPage]=\"config.itemsPerPage\" [(ngModel)]=\"config.currentPage\" (pageChanged)=\"onPageChange($event)\"></pagination>\r\n      </th></tr>\r\n      </tfoot>\r\n    </table>\r\n  </ng-template>\r\n</ng-template>\r\n\r\n<ng-template #template>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Tambahkan Buku</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form class=\"ui form\" #bookForm=\"ngForm\">\r\n\r\n      <div class=\"required field\" [class.error]=\"judul.invalid && judul.touched\">\r\n        <label>Judul</label>\r\n        <input required #judul=\"ngModel\" type=\"text\" name=\"judul\" placeholder=\"Judul\" [(ngModel)]=\"inputBook.judul\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"pengarang.invalid && pengarang.touched\">\r\n        <label>Pengarang</label>\r\n        <input required #pengarang=\"ngModel\" type=\"text\" name=\"pengarang\" placeholder=\"pengarang\" [(ngModel)]=\"inputBook.pengarang\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"deskripsi.invalid && deskripsi.touched\">\r\n        <label>Deskripsi</label>\r\n        <textarea required rows=\"2\" #deskripsi=\"ngModel\" type=\"text\" name=\"Deskripsi\" placeholder=\"Deskripsi\" [(ngModel)]=\"inputBook.deskripsi\"></textarea>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"field\">\r\n          <label>Edisi</label>\r\n          <input #edisi=\"ngModel\" type=\"text\" name=\"edisi\" placeholder=\"Edisi\" [(ngModel)]=\"inputBook.edisi\">\r\n        </div>\r\n        <div class=\"required field\" [class.error]=\"tahun_terbit.invalid && tahun_terbit.touched\">\r\n          <label>Tahun Terbit</label>\r\n          <input required #tahun_terbit=\"ngModel\" type=\"text\" name=\"tahun_terbit\" placeholder=\"tahun_terbit\" [(ngModel)]=\"inputBook.tahun_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"penerbit.invalid && penerbit.touched\">\r\n          <label>Penerbit</label>\r\n          <input required #penerbit=\"ngModel\" type=\"text\" name=\"Penerbit\" placeholder=\"Penerbit\" [(ngModel)]=\"inputBook.penerbit\">\r\n        </div>\r\n        <div class=\"required field\">\r\n          <label>ISBN</label>\r\n          <input #isbn=\"ngModel\" type=\"text\" name=\"isbn\" placeholder=\"isbn\" [(ngModel)]=\"inputBook.isbn\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"bahasa.invalid && bahasa.touched\">\r\n          <label>Bahasa</label>\r\n          <input required #bahasa=\"ngModel\" type=\"text\" name=\"bahasa\" placeholder=\"bahasa\" [(ngModel)]=\"inputBook.bahasa\">\r\n        </div>\r\n        <div class=\"field\">\r\n          <label>Kota Terbit</label>\r\n          <input #kota_terbit=\"ngModel\" type=\"text\" name=\"Kota_Terbit\" placeholder=\"Kota Terbit\" [(ngModel)]=\"inputBook.kota_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"fields\">\r\n        <div class=\"required eight wide field\" [class.error]=\"klasifikasi.invalid && klasifikasi.touched\">\r\n          <label>Klasifikasi</label>\r\n          <input required #klasifikasi=\"ngModel\" type=\"text\" name=\"klasifikasi\" placeholder=\"klasifikasi\" [(ngModel)]=\"inputBook.klasifikasi\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"umum_res.invalid && umum_res.touched\">\r\n          <label>Umum/Res</label>\r\n          <input required #umum_res=\"ngModel\" type=\"text\" name=\"Umum/Res\" placeholder=\"Umum/Res\" [(ngModel)]=\"inputBook.umum_res\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"stok.invalid && stok.touched\">\r\n          <label>Stok</label>\r\n          <input required pattern=\"[0-9]*\" #stok=\"ngModel\" type=\"number\" name=\"stok\" placeholder=\"Stok\" [(ngModel)]=\"inputBook.stok\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"lokasi.invalid && lokasi.touched\">\r\n        <label>Lokasi Buku</label>\r\n        <input required #lokasi=\"ngModel\" type=\"text\" name=\"lokasi_buku\" placeholder=\"lokasi Buku\" [(ngModel)]=\"inputBook.lokasi\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"gambar.invalid && gambar.touched\">\r\n        <label>Link Gambar</label>\r\n        <input required #gambar=\"ngModel\" type=\"text\" name=\"gambar\" placeholder=\"Link Gambar\" [(ngModel)]=\"inputBook.gambar\">\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button class=\"ui button\" type=\"submit\" (click)=\"onSubmit(inputBook)\">Submit</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #update>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Update Buku</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form class=\"ui form\" #bookForm=\"ngForm\">\r\n\r\n      <div class=\"required field\" [class.error]=\"judul.invalid && judul.touched\">\r\n        <label>Judul</label>\r\n        <input required #judul=\"ngModel\" type=\"text\" name=\"judul\" placeholder=\"Judul\" [(ngModel)]=\"updateBook.judul\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"pengarang.invalid && pengarang.touched\">\r\n        <label>Pengarang</label>\r\n        <input required #pengarang=\"ngModel\" type=\"text\" name=\"pengarang\" placeholder=\"pengarang\" [(ngModel)]=\"updateBook.pengarang\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"deskripsi.invalid && deskripsi.touched\">\r\n        <label>Deskripsi</label>\r\n        <textarea required rows=\"2\" #deskripsi=\"ngModel\" type=\"text\" name=\"Deskripsi\" placeholder=\"Deskripsi\" [(ngModel)]=\"updateBook.deskripsi\"></textarea>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"field\">\r\n          <label>Edisi</label>\r\n          <input #edisi=\"ngModel\" type=\"text\" name=\"edisi\" placeholder=\"Edisi\" [(ngModel)]=\"updateBook.edisi\">\r\n        </div>\r\n        <div class=\"required field\" [class.error]=\"tahun_terbit.invalid && tahun_terbit.touched\">\r\n          <label>Tahun Terbit</label>\r\n          <input required #tahun_terbit=\"ngModel\" type=\"text\" name=\"tahun_terbit\" placeholder=\"tahun_terbit\" [(ngModel)]=\"updateBook.tahun_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"penerbit.invalid && penerbit.touched\">\r\n          <label>Penerbit</label>\r\n          <input required #penerbit=\"ngModel\" type=\"text\" name=\"Penerbit\" placeholder=\"Penerbit\" [(ngModel)]=\"updateBook.penerbit\">\r\n        </div>\r\n        <div class=\"required field\">\r\n          <label>ISBN</label>\r\n          <input #isbn=\"ngModel\" type=\"text\" name=\"isbn\" placeholder=\"isbn\" [(ngModel)]=\"updateBook.isbn\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"bahasa.invalid && bahasa.touched\">\r\n          <label>Bahasa</label>\r\n          <input required #bahasa=\"ngModel\" type=\"text\" name=\"bahasa\" placeholder=\"bahasa\" [(ngModel)]=\"updateBook.bahasa\">\r\n        </div>\r\n        <div class=\"field\">\r\n          <label>Kota Terbit</label>\r\n          <input #kota_terbit=\"ngModel\" type=\"text\" name=\"Kota_Terbit\" placeholder=\"Kota Terbit\" [(ngModel)]=\"updateBook.kota_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"fields\">\r\n        <div class=\"required eight wide field\" [class.error]=\"klasifikasi.invalid && klasifikasi.touched\">\r\n          <label>Klasifikasi</label>\r\n          <input required #klasifikasi=\"ngModel\" type=\"text\" name=\"klasifikasi\" placeholder=\"klasifikasi\" [(ngModel)]=\"updateBook.klasifikasi\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"umum_res.invalid && umum_res.touched\">\r\n          <label>Umum/Res</label>\r\n          <input required #umum_res=\"ngModel\" type=\"text\" name=\"Umum/Res\" placeholder=\"Umum/Res\" [(ngModel)]=\"updateBook.umum_res\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"stok.invalid && stok.touched\">\r\n          <label>Stok</label>\r\n          <input required pattern=\"[0-9]*\" #stok=\"ngModel\" type=\"number\" name=\"stok\" placeholder=\"Stok\" [(ngModel)]=\"updateBook.stok\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"lokasi.invalid && lokasi.touched\">\r\n        <label>Lokasi Buku</label>\r\n        <input required #lokasi=\"ngModel\" type=\"text\" name=\"lokasi_buku\" placeholder=\"lokasi Buku\" [(ngModel)]=\"updateBook.lokasi\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"gambar.invalid && gambar.touched\">\r\n        <label>Link Gambar</label>\r\n        <input required #gambar=\"ngModel\" type=\"text\" name=\"gambar\" placeholder=\"Link Gambar\" [(ngModel)]=\"updateBook.gambar\">\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button class=\"ui button\" type=\"submit\" (click)=\"onUpdate(updateBook)\">Update</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #delete>\r\n  <div class=\"modal-body text-center\">\r\n    <p>Do you want to confirm?</p>\r\n    <button type=\"button\" class=\"btn btn-default\" (click)=\"onDelete(deleteID)\" >Yes</button>\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"onNotDelete()\" >No</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #CategoryTemplate>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Edit Kategori</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form class=\"ui form\" #CategoryForm=\"ngForm\">\r\n\r\n      <div *ngFor=\"let type of Category\" class=\"ui left labeled button\" tabindex=\"0\" style=\"margin-top: 2px; margin-right: 2px\">\r\n        <a class=\"ui basic label\">\r\n          {{type.kategori}}\r\n        </a>\r\n        <div class=\"ui icon button\" (click)=\"onDeleteCategory(type.kategori)\">\r\n          <i class=\"trash icon\"></i>\r\n        </div>\r\n      </div>\r\n\r\n\r\n      <div class=\"required field\" [class.error]=\"kategori.invalid && kategori.touched\" style=\"margin-top: 1rem\">\r\n        <label>Kategori</label>\r\n        <input required #kategori=\"ngModel\" type=\"text\" name=\"judul\" placeholder=\"Kategori\" [(ngModel)]=\"inputCategory\">\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button class=\"ui button\" type=\"submit\" (click)=\"onSubmitCategory(inputCategory)\">Submit</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #DownloadTemplate>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Download Tabel</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <div *ngIf=\"loadingDL;else loadsDL\" class=\"ui segment\" style=\"padding: 200px 0 0 0 \">\r\n      <div class=\"ui active inverted dimmer\">\r\n        <div class=\"ui large text loader\">Memproses tabel</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #loadsDL>\r\n  <div style=\"text-align: center; padding: 10px\">\r\n    <button class=\"btn btn-icon btn-new-menu\" style=\"color: #fff;margin-right: 20px; background-color: #107c41; box-shadow: 0 0 0 0 rgba(34,36,38,.15)\"\r\n            (click)=\"onDownload()\">\r\n      <i class=\"download icon\"></i>\r\n      Unduh\r\n    </button>\r\n  </div>\r\n</ng-template>\r\n";
+    __webpack_exports__["default"] = "<div id=\"navbar\" class=\"header-container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-lg-6 col-md-6 col-sm-6 left-navbar\">\r\n      <h2>Daftar Buku</h2>\r\n    </div>\r\n    <div class=\"col-lg-6 col-md-6 col-sm-6 right-navbar\">\r\n      <button class=\"btn btn-icon btn-new-menu\" style=\"color: #fff;margin-right: 20px; background-color: #107c41; box-shadow: 0 0 0 0 rgba(34,36,38,.15)\"\r\n              (click)=\"openDownloadModal(DownloadTemplate)\">\r\n        <i class=\"download icon\"></i>\r\n        Unduh Excel\r\n      </button>\r\n      <button class=\"btn btn-primary btn-icon btn-new-menu\" (click)=\"openModal(template)\">\r\n        <i class=\"plus icon\"></i>\r\n        Tambahkan Buku\r\n      </button>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div *ngIf=\"loading;else loads\" class=\"ui segment\" style=\"padding: 200px 0 0 0 \">\r\n  <div class=\"ui active inverted dimmer\">\r\n    <div class=\"ui large text loader\">Loading</div>\r\n  </div>\r\n</div>\r\n\r\n<ng-template #loads>\r\n\r\n  <div class=\"mt-3 pb-0\" style=\"width: 100%\">\r\n    <div class=\"row align-self-center\" style=\"margin-top: 20px; z-index: 98;\">\r\n      <div class=\"col-xl-8 col-lg-8 col-md-8 col-sm-8\">\r\n        <div class=\"category\" style=\"display: flex\">\r\n          <ng-select [items]=\"Category\"\r\n                     bindLabel=\"kategori\"\r\n                     placeholder=\"Kategori...\"\r\n                     autofocus\r\n                     bindValue=\"kategori\"\r\n                     [(ngModel)]=\"selectedCategory\"\r\n                     (change)=\"onCategoryChange($event)\"\r\n                     style=\"width: 120%\">\r\n          </ng-select>\r\n          <div class=\"ui icon button\" style=\"margin-left: 5px\" (click)=\"openModal(CategoryTemplate)\">\r\n            <i class=\"edit outline icon\"></i>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-xl-4 col-lg-4 col-md-4 col-sm-4\">\r\n        <div class=\"ui search\">\r\n          <input class=\"prompt\" style=\"width: 100%\" type=\"text\" placeholder=\"Mencari buku...\" [(ngModel)]=\"search\" (keyup)=\"onSearch(search)\" (search)=\"onSearch(search)\">\r\n          <div class=\"results\"></div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row align-self-center\">\r\n    </div>\r\n  </div>\r\n\r\n  <div *ngIf=\"nodata; else theredata\" class=\"card\" style=\"margin-top: 10px; padding: 10px\">\r\n    <div style=\"text-align:center ;\">\r\n      <p class=\"ml-2\" style=\"font-size: 18px; padding: 2rem;\">Pencarian tidak ditemukan!</p>\r\n    </div>\r\n  </div>\r\n\r\n  <ng-template #theredata>\r\n    <table class=\"ui celled padded table\">\r\n      <thead>\r\n      <tr><th class=\"single line\">ID Buku</th>\r\n        <th>Judul</th>\r\n        <th>Pengarang</th>\r\n        <th>Penerbit</th>\r\n        <th>Tahun Terbit</th>\r\n        <th>Klasifikasi</th>\r\n        <th>Kategori</th>\r\n        <th>Umum/Res</th>\r\n        <th>Bahasa</th>\r\n        <th>Lokasi</th>\r\n        <th>Stok</th>\r\n        <th>Edit</th>\r\n      </tr></thead>\r\n      <tbody>\r\n      <!--  <tr *ngFor=\"let item of pageOfItems | paginate: config\">-->\r\n      <tr *ngFor=\"let item of pageOfItems\">\r\n        <td style=\"text-align: center; margin: 0 auto\"><img src=\"{{item.gambar}}\" style=\"height: 100px\"><div>{{item.buku_id}}</div></td>\r\n        <td>{{item.judul}}</td>\r\n        <td>{{item.pengarang}}</td>\r\n        <td>{{item.penerbit}}</td>\r\n        <td>{{item.tahun_terbit}}</td>\r\n        <td>{{item.klasifikasi}}</td>\r\n        <td>{{item.kategori}}</td>\r\n        <td>{{item.umum_res}}</td>\r\n        <td>{{item.bahasa}}</td>\r\n        <td>{{item.lokasi}}</td>\r\n        <td>{{item.stok}}</td>\r\n        <td>\r\n          <div style=\"display: block\">\r\n            <a (click)=\"onView(item.buku_id, update)\"><i class=\"edit outline icon\"></i></a>\r\n            <a></a>\r\n            <a (click)=\"onModalBarcode(item.buku_id, item.judul, BarcodeTemplate)\"><i class=\"barcode icon\"></i></a>\r\n            <a></a>\r\n            <a (click)=\"onModalDelete(item.buku_id, delete)\"><i class=\"trash alternate outline icon\"></i></a>\r\n          </div>\r\n        </td>\r\n      </tr>\r\n      </tbody>\r\n      <tfoot>\r\n      <tr><th colspan=\"12\">\r\n        <pagination previousText=\"&lsaquo;\" nextText=\"&rsaquo;\" firstText=\"&laquo;\" lastText=\"&raquo;\" [boundaryLinks]=\"true\"\r\n                    [totalItems]=\"config.totalItems\" [itemsPerPage]=\"config.itemsPerPage\" [(ngModel)]=\"config.currentPage\" (pageChanged)=\"onPageChange($event)\"></pagination>\r\n      </th></tr>\r\n      </tfoot>\r\n    </table>\r\n  </ng-template>\r\n</ng-template>\r\n\r\n<ng-template #template>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Tambahkan Buku</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form class=\"ui form\" #bookForm=\"ngForm\">\r\n\r\n      <div class=\"required field\" [class.error]=\"judul.invalid && judul.touched\">\r\n        <label>Judul</label>\r\n        <input required #judul=\"ngModel\" type=\"text\" name=\"judul\" placeholder=\"Judul\" [(ngModel)]=\"inputBook.judul\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"pengarang.invalid && pengarang.touched\">\r\n        <label>Pengarang</label>\r\n        <input required #pengarang=\"ngModel\" type=\"text\" name=\"pengarang\" placeholder=\"pengarang\" [(ngModel)]=\"inputBook.pengarang\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"deskripsi.invalid && deskripsi.touched\">\r\n        <label>Deskripsi</label>\r\n        <textarea required rows=\"2\" #deskripsi=\"ngModel\" type=\"text\" name=\"Deskripsi\" placeholder=\"Deskripsi\" [(ngModel)]=\"inputBook.deskripsi\"></textarea>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"field\">\r\n          <label>Edisi</label>\r\n          <input #edisi=\"ngModel\" type=\"text\" name=\"edisi\" placeholder=\"Edisi\" [(ngModel)]=\"inputBook.edisi\">\r\n        </div>\r\n        <div class=\"required field\" [class.error]=\"tahun_terbit.invalid && tahun_terbit.touched\">\r\n          <label>Tahun Terbit</label>\r\n          <input required #tahun_terbit=\"ngModel\" type=\"text\" name=\"tahun_terbit\" placeholder=\"tahun_terbit\" [(ngModel)]=\"inputBook.tahun_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"penerbit.invalid && penerbit.touched\">\r\n          <label>Penerbit</label>\r\n          <input required #penerbit=\"ngModel\" type=\"text\" name=\"Penerbit\" placeholder=\"Penerbit\" [(ngModel)]=\"inputBook.penerbit\">\r\n        </div>\r\n        <div class=\"required field\">\r\n          <label>ISBN</label>\r\n          <input #isbn=\"ngModel\" type=\"text\" name=\"isbn\" placeholder=\"isbn\" [(ngModel)]=\"inputBook.isbn\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"bahasa.invalid && bahasa.touched\">\r\n          <label>Bahasa</label>\r\n          <input required #bahasa=\"ngModel\" type=\"text\" name=\"bahasa\" placeholder=\"bahasa\" [(ngModel)]=\"inputBook.bahasa\">\r\n        </div>\r\n        <div class=\"field\">\r\n          <label>Kota Terbit</label>\r\n          <input #kota_terbit=\"ngModel\" type=\"text\" name=\"Kota_Terbit\" placeholder=\"Kota Terbit\" [(ngModel)]=\"inputBook.kota_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"fields\">\r\n        <div class=\"required eight wide field\" [class.error]=\"klasifikasi.invalid && klasifikasi.touched\">\r\n          <label>Klasifikasi</label>\r\n          <input required #klasifikasi=\"ngModel\" type=\"text\" name=\"klasifikasi\" placeholder=\"klasifikasi\" [(ngModel)]=\"inputBook.klasifikasi\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"umum_res.invalid && umum_res.touched\">\r\n          <label>Umum/Res</label>\r\n          <input required #umum_res=\"ngModel\" type=\"text\" name=\"Umum/Res\" placeholder=\"Umum/Res\" [(ngModel)]=\"inputBook.umum_res\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"stok.invalid && stok.touched\">\r\n          <label>Stok</label>\r\n          <input required pattern=\"[0-9]*\" #stok=\"ngModel\" type=\"number\" name=\"stok\" placeholder=\"Stok\" [(ngModel)]=\"inputBook.stok\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"lokasi.invalid && lokasi.touched\">\r\n        <label>Lokasi Buku</label>\r\n        <input required #lokasi=\"ngModel\" type=\"text\" name=\"lokasi_buku\" placeholder=\"lokasi Buku\" [(ngModel)]=\"inputBook.lokasi\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"gambar.invalid && gambar.touched\">\r\n        <label>Link Gambar</label>\r\n        <input required #gambar=\"ngModel\" type=\"text\" name=\"gambar\" placeholder=\"Link Gambar\" [(ngModel)]=\"inputBook.gambar\">\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button class=\"ui button\" type=\"submit\" (click)=\"onSubmit(inputBook, BarcodeTemplate)\">Submit</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #update>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Update Buku</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form class=\"ui form\" #bookForm=\"ngForm\">\r\n\r\n      <div class=\"required field\" [class.error]=\"judul.invalid && judul.touched\">\r\n        <label>Judul</label>\r\n        <input required #judul=\"ngModel\" type=\"text\" name=\"judul\" placeholder=\"Judul\" [(ngModel)]=\"updateBook.judul\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"pengarang.invalid && pengarang.touched\">\r\n        <label>Pengarang</label>\r\n        <input required #pengarang=\"ngModel\" type=\"text\" name=\"pengarang\" placeholder=\"pengarang\" [(ngModel)]=\"updateBook.pengarang\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"deskripsi.invalid && deskripsi.touched\">\r\n        <label>Deskripsi</label>\r\n        <textarea required rows=\"2\" #deskripsi=\"ngModel\" type=\"text\" name=\"Deskripsi\" placeholder=\"Deskripsi\" [(ngModel)]=\"updateBook.deskripsi\"></textarea>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"field\">\r\n          <label>Edisi</label>\r\n          <input #edisi=\"ngModel\" type=\"text\" name=\"edisi\" placeholder=\"Edisi\" [(ngModel)]=\"updateBook.edisi\">\r\n        </div>\r\n        <div class=\"required field\" [class.error]=\"tahun_terbit.invalid && tahun_terbit.touched\">\r\n          <label>Tahun Terbit</label>\r\n          <input required #tahun_terbit=\"ngModel\" type=\"text\" name=\"tahun_terbit\" placeholder=\"tahun_terbit\" [(ngModel)]=\"updateBook.tahun_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"penerbit.invalid && penerbit.touched\">\r\n          <label>Penerbit</label>\r\n          <input required #penerbit=\"ngModel\" type=\"text\" name=\"Penerbit\" placeholder=\"Penerbit\" [(ngModel)]=\"updateBook.penerbit\">\r\n        </div>\r\n        <div class=\"required field\">\r\n          <label>ISBN</label>\r\n          <input #isbn=\"ngModel\" type=\"text\" name=\"isbn\" placeholder=\"isbn\" [(ngModel)]=\"updateBook.isbn\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"two fields\">\r\n        <div class=\"required field\" [class.error]=\"bahasa.invalid && bahasa.touched\">\r\n          <label>Bahasa</label>\r\n          <input required #bahasa=\"ngModel\" type=\"text\" name=\"bahasa\" placeholder=\"bahasa\" [(ngModel)]=\"updateBook.bahasa\">\r\n        </div>\r\n        <div class=\"field\">\r\n          <label>Kota Terbit</label>\r\n          <input #kota_terbit=\"ngModel\" type=\"text\" name=\"Kota_Terbit\" placeholder=\"Kota Terbit\" [(ngModel)]=\"updateBook.kota_terbit\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"fields\">\r\n        <div class=\"required eight wide field\" [class.error]=\"klasifikasi.invalid && klasifikasi.touched\">\r\n          <label>Klasifikasi</label>\r\n          <input required #klasifikasi=\"ngModel\" type=\"text\" name=\"klasifikasi\" placeholder=\"klasifikasi\" [(ngModel)]=\"updateBook.klasifikasi\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"umum_res.invalid && umum_res.touched\">\r\n          <label>Umum/Res</label>\r\n          <input required #umum_res=\"ngModel\" type=\"text\" name=\"Umum/Res\" placeholder=\"Umum/Res\" [(ngModel)]=\"updateBook.umum_res\">\r\n        </div>\r\n        <div class=\"required four wide field\" [class.error]=\"stok.invalid && stok.touched\">\r\n          <label>Stok</label>\r\n          <input required pattern=\"[0-9]*\" #stok=\"ngModel\" type=\"number\" name=\"stok\" placeholder=\"Stok\" [(ngModel)]=\"updateBook.stok\">\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"lokasi.invalid && lokasi.touched\">\r\n        <label>Lokasi Buku</label>\r\n        <input required #lokasi=\"ngModel\" type=\"text\" name=\"lokasi_buku\" placeholder=\"lokasi Buku\" [(ngModel)]=\"updateBook.lokasi\">\r\n      </div>\r\n\r\n      <div class=\"required field\" [class.error]=\"gambar.invalid && gambar.touched\">\r\n        <label>Link Gambar</label>\r\n        <input required #gambar=\"ngModel\" type=\"text\" name=\"gambar\" placeholder=\"Link Gambar\" [(ngModel)]=\"updateBook.gambar\">\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button class=\"ui button\" type=\"submit\" (click)=\"onUpdate(updateBook)\">Update</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #delete>\r\n  <div class=\"modal-body text-center\">\r\n    <p>Do you want to confirm?</p>\r\n    <button type=\"button\" class=\"btn btn-default\" (click)=\"onDelete(deleteID)\" >Yes</button>\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"onNotDelete()\" >No</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #CategoryTemplate>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Edit Kategori</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form class=\"ui form\" #CategoryForm=\"ngForm\">\r\n\r\n      <div *ngFor=\"let type of Category\" class=\"ui left labeled button\" tabindex=\"0\" style=\"margin-top: 2px; margin-right: 2px\">\r\n        <a class=\"ui basic label\">\r\n          {{type.kategori}}\r\n        </a>\r\n        <div class=\"ui icon button\" (click)=\"onDeleteCategory(type.kategori)\">\r\n          <i class=\"trash icon\"></i>\r\n        </div>\r\n      </div>\r\n\r\n\r\n      <div class=\"required field\" [class.error]=\"kategori.invalid && kategori.touched\" style=\"margin-top: 1rem\">\r\n        <label>Kategori</label>\r\n        <input required #kategori=\"ngModel\" type=\"text\" name=\"judul\" placeholder=\"Kategori\" [(ngModel)]=\"inputCategory\">\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button class=\"ui button\" type=\"submit\" (click)=\"onSubmitCategory(inputCategory)\">Submit</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #DownloadTemplate>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Download Tabel</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <div *ngIf=\"loadingDL;else loadsDL\" class=\"ui segment\" style=\"padding: 200px 0 0 0 \">\r\n      <div class=\"ui active inverted dimmer\">\r\n        <div class=\"ui large text loader\">Memproses tabel</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #loadsDL>\r\n  <div style=\"text-align: center; padding: 10px\">\r\n    <button class=\"btn btn-icon btn-new-menu\" style=\"color: #fff;margin-right: 20px; background-color: #107c41; box-shadow: 0 0 0 0 rgba(34,36,38,.15)\"\r\n            (click)=\"onDownload()\">\r\n      <i class=\"download icon\"></i>\r\n      Unduh\r\n    </button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #BarcodeTemplate>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\">Barcode</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <div class=\"ui segment\" style=\"padding: 10px 0 0 0 \">\r\n      <p style=\"text-align: center; font-size: 20px; font-weight: bold\">{{this.barcodeTitle}}</p>\r\n      <div style=\"text-align: center; padding: 10px\">\r\n        <ngx-barcode id=\"barcodesvg\" [bc-value]=\"barcode\"\r\n                     [bc-display-value]=\"true\"\r\n                     [bc-format]=\"'CODE128'\"\r\n                     [bc-element-type]=\"'svg'\">\r\n        </ngx-barcode>\r\n      </div>\r\n      <div style=\"text-align: center; padding: 10px\">\r\n        <button class=\"btn btn-icon btn-new-menu\"\r\n                style=\"color: #fff; background-color: #107c41;\r\n                box-shadow: 0 0 0 0 rgba(34,36,38,.15)\"\r\n                (click)=\"onDownloadBarcode()\">\r\n          <i class=\"download icon\"></i>\r\n          Unduh\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n";
     /***/
   },
 
@@ -1080,79 +1080,85 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony import */
 
 
-    var ngx_bootstrap_pagination__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
+    var ngx_barcode__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
+    /*! ngx-barcode */
+    "./node_modules/ngx-barcode/index.js");
+    /* harmony import */
+
+
+    var ngx_bootstrap_pagination__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
     /*! ngx-bootstrap/pagination */
     "./node_modules/ngx-bootstrap/pagination/fesm2015/ngx-bootstrap-pagination.js");
     /* harmony import */
 
 
-    var ngx_bootstrap_tooltip__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
+    var ngx_bootstrap_tooltip__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
     /*! ngx-bootstrap/tooltip */
     "./node_modules/ngx-bootstrap/tooltip/fesm2015/ngx-bootstrap-tooltip.js");
     /* harmony import */
 
 
-    var _login_login_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
+    var _login_login_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
     /*! ./login/login.component */
     "./src/app/login/login.component.ts");
     /* harmony import */
 
 
-    var _loanpage_loanpage_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    var _loanpage_loanpage_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
     /*! ./loanpage/loanpage.component */
     "./src/app/loanpage/loanpage.component.ts");
     /* harmony import */
 
 
-    var _loanpage_currentloan_currentloan_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
+    var _loanpage_currentloan_currentloan_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(
     /*! ./loanpage/currentloan/currentloan.component */
     "./src/app/loanpage/currentloan/currentloan.component.ts");
     /* harmony import */
 
 
-    var _loanpage_historyloan_historyloan_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(
+    var _loanpage_historyloan_historyloan_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(
     /*! ./loanpage/historyloan/historyloan.component */
     "./src/app/loanpage/historyloan/historyloan.component.ts");
     /* harmony import */
 
 
-    var _usermanagement_usermanagement_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(
+    var _usermanagement_usermanagement_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(
     /*! ./usermanagement/usermanagement.component */
     "./src/app/usermanagement/usermanagement.component.ts");
     /* harmony import */
 
 
-    var _auth_guard__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(
+    var _auth_guard__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(
     /*! ./auth.guard */
     "./src/app/auth.guard.ts");
     /* harmony import */
 
 
-    var _login_logout_logout_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(
+    var _login_logout_logout_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
     /*! ./login/logout/logout.component */
     "./src/app/login/logout/logout.component.ts");
     /* harmony import */
 
 
-    var _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
+    var _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(
     /*! @ng-select/ng-select */
     "./node_modules/@ng-select/ng-select/fesm2015/ng-select-ng-select.js");
     /* harmony import */
 
 
-    var _angular_forms__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(
+    var _angular_forms__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(
     /*! @angular/forms */
     "./node_modules/@angular/forms/fesm2015/forms.js");
     /* harmony import */
 
 
-    var _returnpage_returnpage_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(
+    var _returnpage_returnpage_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(
     /*! ./returnpage/returnpage.component */
     "./src/app/returnpage/returnpage.component.ts");
     /* harmony import */
 
 
-    var _returnlandingpage_returnlandingpage_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(
+    var _returnlandingpage_returnlandingpage_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(
     /*! ./returnlandingpage/returnlandingpage.component */
     "./src/app/returnlandingpage/returnlandingpage.component.ts"); // import {NgxPaginationModule} from 'ngx-pagination';
 
@@ -1164,10 +1170,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     };
 
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
-      declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"], _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_4__["DashboardComponent"], _sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_5__["SidebarComponent"], _booklist_booklist_component__WEBPACK_IMPORTED_MODULE_7__["BooklistComponent"], _login_login_component__WEBPACK_IMPORTED_MODULE_14__["LoginComponent"], _login_logout_logout_component__WEBPACK_IMPORTED_MODULE_20__["LogoutComponent"], _loanpage_loanpage_component__WEBPACK_IMPORTED_MODULE_15__["LoanpageComponent"], _loanpage_currentloan_currentloan_component__WEBPACK_IMPORTED_MODULE_16__["CurrentloanComponent"], _loanpage_historyloan_historyloan_component__WEBPACK_IMPORTED_MODULE_17__["HistoryloanComponent"], _usermanagement_usermanagement_component__WEBPACK_IMPORTED_MODULE_18__["UsermanagementComponent"], _returnpage_returnpage_component__WEBPACK_IMPORTED_MODULE_23__["ReturnpageComponent"], _returnlandingpage_returnlandingpage_component__WEBPACK_IMPORTED_MODULE_24__["ReturnlandingpageComponent"]],
-      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_9__["BrowserAnimationsModule"], _routing_module__WEBPACK_IMPORTED_MODULE_6__["RoutingModule"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_8__["ModalModule"].forRoot(), _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_22__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_22__["ReactiveFormsModule"], ngx_toastr__WEBPACK_IMPORTED_MODULE_11__["ToastrModule"].forRoot(), // NgxPaginationModule
-      ngx_bootstrap_pagination__WEBPACK_IMPORTED_MODULE_12__["PaginationModule"].forRoot(), ngx_bootstrap_tooltip__WEBPACK_IMPORTED_MODULE_13__["TooltipModule"].forRoot(), _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_21__["NgSelectModule"]],
-      providers: [_auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"]],
+      declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"], _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_4__["DashboardComponent"], _sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_5__["SidebarComponent"], _booklist_booklist_component__WEBPACK_IMPORTED_MODULE_7__["BooklistComponent"], _login_login_component__WEBPACK_IMPORTED_MODULE_15__["LoginComponent"], _login_logout_logout_component__WEBPACK_IMPORTED_MODULE_21__["LogoutComponent"], _loanpage_loanpage_component__WEBPACK_IMPORTED_MODULE_16__["LoanpageComponent"], _loanpage_currentloan_currentloan_component__WEBPACK_IMPORTED_MODULE_17__["CurrentloanComponent"], _loanpage_historyloan_historyloan_component__WEBPACK_IMPORTED_MODULE_18__["HistoryloanComponent"], _usermanagement_usermanagement_component__WEBPACK_IMPORTED_MODULE_19__["UsermanagementComponent"], _returnpage_returnpage_component__WEBPACK_IMPORTED_MODULE_24__["ReturnpageComponent"], _returnlandingpage_returnlandingpage_component__WEBPACK_IMPORTED_MODULE_25__["ReturnlandingpageComponent"]],
+      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_9__["BrowserAnimationsModule"], _routing_module__WEBPACK_IMPORTED_MODULE_6__["RoutingModule"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_8__["ModalModule"].forRoot(), _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_23__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_23__["ReactiveFormsModule"], ngx_toastr__WEBPACK_IMPORTED_MODULE_11__["ToastrModule"].forRoot(), // NgxPaginationModule
+      ngx_bootstrap_pagination__WEBPACK_IMPORTED_MODULE_13__["PaginationModule"].forRoot(), ngx_bootstrap_tooltip__WEBPACK_IMPORTED_MODULE_14__["TooltipModule"].forRoot(), _ng_select_ng_select__WEBPACK_IMPORTED_MODULE_22__["NgSelectModule"], ngx_barcode__WEBPACK_IMPORTED_MODULE_12__["NgxBarcodeModule"]],
+      providers: [_auth_guard__WEBPACK_IMPORTED_MODULE_20__["AuthGuard"]],
       bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
     })], AppModule);
     /***/
@@ -1351,6 +1357,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _notification_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! ../notification.service */
     "./src/app/notification.service.ts");
+    /* harmony import */
+
+
+    var save_svg_as_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+    /*! save-svg-as-png */
+    "./node_modules/save-svg-as-png/lib/saveSvgAsPng.js");
+    /* harmony import */
+
+
+    var save_svg_as_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(save_svg_as_png__WEBPACK_IMPORTED_MODULE_7__);
 
     var BooklistComponent = /*#__PURE__*/function () {
       function BooklistComponent(modalService, http, route, toastr, router) {
@@ -1516,7 +1532,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         }
       }, {
         key: "onSubmit",
-        value: function onSubmit(data) {
+        value: function onSubmit(data, template) {
           var _this7 = this;
 
           if (this.inputBook.judul === '' && this.inputBook.edisi === '' && this.inputBook.penerbit === '' && this.inputBook.tahun_terbit === '' && this.inputBook.deskripsi === '' && this.inputBook.pengarang === '' && this.inputBook.umum_res === '' && this.inputBook.bahasa === '' && this.inputBook.isbn === '' && this.inputBook.lokasi === '' && this.inputBook.kota_terbit === '' && this.inputBook.gambar === '' && this.inputBook.klasifikasi === '') {
@@ -1531,7 +1547,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 _this7.toastr.showError(x.message, 'Gagal');
               }
 
+              console.log(x);
+
               _this7.ngOnInit();
+
+              _this7.onModalBarcode(x.data.buku_id, x.data.judul, template);
             });
           }
         }
@@ -1637,6 +1657,47 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               _this12.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
+        }
+      }, {
+        key: "setBlobBarcode",
+        value: function setBlobBarcode(base64Data) {
+          var sliceSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 512;
+          var split = base64Data.split(',', 2);
+          var byteCharacters = atob(split[1]);
+          var byteArrays = [];
+
+          for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+            var byteNumbers = new Array(slice.length);
+
+            for (var i = 0; i < slice.length; i++) {
+              byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+          }
+
+          return new Blob(byteArrays, {
+            type: 'image/png'
+          });
+        }
+      }, {
+        key: "onDownloadBarcode",
+        value: function onDownloadBarcode() {
+          var _this13 = this;
+
+          save_svg_as_png__WEBPACK_IMPORTED_MODULE_7__["svgAsPngUri"](document.getElementsByTagName('svg')[0], {}, function (uri) {
+            var url = window.URL.createObjectURL(_this13.setBlobBarcode(uri));
+            window.open(url);
+          });
+        }
+      }, {
+        key: "onModalBarcode",
+        value: function onModalBarcode(id, judul, template) {
+          this.barcode = id;
+          this.barcodeTitle = judul;
+          this.modalRef = this.modalService.show(template);
         }
       }]);
 
@@ -1850,53 +1911,53 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getPeminjaman",
         value: function getPeminjaman() {
-          var _this13 = this;
+          var _this14 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/berlangsung', {
             page: 1,
             size: 5
           }).subscribe(function (x) {
-            _this13.pageOfItemsPeminjaman = x.data.records;
+            _this14.pageOfItemsPeminjaman = x.data.records;
           });
         }
       }, {
         key: "getPengembalian",
         value: function getPengembalian() {
-          var _this14 = this;
+          var _this15 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/riwayat', {
             page: 1,
             size: 5
           }).subscribe(function (x) {
-            _this14.pageOfItemsPengembalian = x.data.records;
+            _this15.pageOfItemsPengembalian = x.data.records;
           });
         }
       }, {
         key: "getBooksCount",
         value: function getBooksCount() {
-          var _this15 = this;
+          var _this16 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/summary/buku').subscribe(function (x) {
-            _this15.countBook = x.data;
+            _this16.countBook = x.data;
           });
         }
       }, {
         key: "getLoanCount",
         value: function getLoanCount() {
-          var _this16 = this;
+          var _this17 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/summary/peminjaman').subscribe(function (x) {
-            _this16.countLoan = x.data;
+            _this17.countLoan = x.data;
           });
         }
       }, {
         key: "getRetunrCount",
         value: function getRetunrCount() {
-          var _this17 = this;
+          var _this18 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/summary/pengembalian').subscribe(function (x) {
-            _this17.countReturn = x.data;
-            _this17.loading = false;
+            _this18.countReturn = x.data;
+            _this18.loading = false;
           });
         }
       }]);
@@ -2017,7 +2078,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(CurrentloanComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this18 = this;
+          var _this19 = this;
 
           this.MhsId = this.route.snapshot.paramMap.get('id');
           this.getMhsInfo();
@@ -2027,23 +2088,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this18.getLoanInfo(x.page || 1);
+            return _this19.getLoanInfo(x.page || 1);
           });
           this.loading = true;
         }
       }, {
         key: "getMhsInfo",
         value: function getMhsInfo() {
-          var _this19 = this;
+          var _this20 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/view/' + this.MhsId).subscribe(function (x) {
-            _this19.dataMhs = x.data;
+            _this20.dataMhs = x.data;
           });
         }
       }, {
         key: "getLoanInfo",
         value: function getLoanInfo(num) {
-          var _this20 = this;
+          var _this21 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/berlangsung', {
             id: this.MhsId,
@@ -2052,28 +2113,28 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             size: 10
           }).subscribe(function (x) {
             if (x.data.total_record === 0) {
-              _this20.nodata = true;
+              _this21.nodata = true;
             } else {
-              _this20.nodata = false;
-              _this20.pager = x.data;
-              _this20.pageOfItems = x.data.records;
-              _this20.config = {
+              _this21.nodata = false;
+              _this21.pager = x.data;
+              _this21.pageOfItems = x.data.records;
+              _this21.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
 
-            _this20.loading = false;
+            _this21.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this21 = this;
+          var _this22 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this21.getLoanInfo(x.page || 1);
+            return _this22.getLoanInfo(x.page || 1);
           });
         }
       }, {
@@ -2106,20 +2167,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this22 = this;
+          var _this23 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/kembali', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this22.modalRef.hide();
+            _this23.modalRef.hide();
 
             if (x.status === true) {
-              _this22.toastr.showSuccess(x.message, 'Berhasil');
+              _this23.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this22.toastr.showError(x.message, 'Gagal');
+              _this23.toastr.showError(x.message, 'Gagal');
             }
 
-            _this22.ngOnInit();
+            _this23.ngOnInit();
           });
         }
       }, {
@@ -2141,13 +2202,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDownload",
         value: function onDownload() {
-          var _this23 = this;
+          var _this24 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/downloadberlangsung', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
-              var url = window.URL.createObjectURL(_this23.returnBlob(res));
+              var url = window.URL.createObjectURL(_this24.returnBlob(res));
               window.open(url);
             }
           });
@@ -2155,7 +2216,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "openDownloadModal",
         value: function openDownloadModal(template) {
-          var _this24 = this;
+          var _this25 = this;
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
@@ -2168,19 +2229,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(x);
 
             if (x.status === true) {
-              if (_this24.nodata === false) {
+              if (_this25.nodata === false) {
                 setTimeout(function () {
-                  _this24.loadingDL = false;
+                  _this25.loadingDL = false;
                 }, 1000);
 
-                _this24.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
+                _this25.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
               } else {
-                _this24.modalRef.hide();
+                _this25.modalRef.hide();
 
-                _this24.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
+                _this25.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
               }
             } else {
-              _this24.toastr.showError('Data gagal Diolah', 'Gagal');
+              _this25.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
         }
@@ -2310,7 +2371,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(HistoryloanComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this25 = this;
+          var _this26 = this;
 
           this.loading = true;
           this.MhsId = this.route.snapshot.paramMap.get('id');
@@ -2321,23 +2382,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this25.getLoanInfo(x.page || 1);
+            return _this26.getLoanInfo(x.page || 1);
           });
         }
       }, {
         key: "getMhsInfo",
         value: function getMhsInfo() {
-          var _this26 = this;
+          var _this27 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/view/' + this.MhsId).subscribe(function (x) {
-            _this26.dataMhs = x.data;
+            _this27.dataMhs = x.data;
             console.log(x);
           });
         }
       }, {
         key: "getLoanInfo",
         value: function getLoanInfo(num) {
-          var _this27 = this;
+          var _this28 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/riwayat', {
             id: this.MhsId,
@@ -2346,28 +2407,28 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             size: 10
           }).subscribe(function (x) {
             if (x.data.total_record === 0) {
-              _this27.nodata = true;
+              _this28.nodata = true;
             } else {
-              _this27.nodata = false;
-              _this27.pager = x.data;
-              _this27.pageOfItems = x.data.records;
-              _this27.config = {
+              _this28.nodata = false;
+              _this28.pager = x.data;
+              _this28.pageOfItems = x.data.records;
+              _this28.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
 
-            _this27.loading = false;
+            _this28.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this28 = this;
+          var _this29 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this28.getLoanInfo(x.page || 1);
+            return _this29.getLoanInfo(x.page || 1);
           });
         }
       }, {
@@ -2416,13 +2477,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDownload",
         value: function onDownload() {
-          var _this29 = this;
+          var _this30 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/downloadriwayat', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
-              var url = window.URL.createObjectURL(_this29.returnBlob(res));
+              var url = window.URL.createObjectURL(_this30.returnBlob(res));
               window.open(url);
             }
           });
@@ -2430,7 +2491,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "openDownloadModal",
         value: function openDownloadModal(template) {
-          var _this30 = this;
+          var _this31 = this;
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
@@ -2443,19 +2504,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             console.log(x);
 
             if (x.status === true) {
-              if (_this30.nodata === false) {
+              if (_this31.nodata === false) {
                 setTimeout(function () {
-                  _this30.loadingDL = false;
+                  _this31.loadingDL = false;
                 }, 1000);
 
-                _this30.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
+                _this31.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
               } else {
-                _this30.modalRef.hide();
+                _this31.modalRef.hide();
 
-                _this30.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
+                _this31.toastr.showError('Data Tidak bisa Diolah', 'Tidak ditemukan data');
               }
             } else {
-              _this30.toastr.showError('Data gagal Diolah', 'Gagal');
+              _this31.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
         }
@@ -2586,7 +2647,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(LoanpageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this31 = this;
+          var _this32 = this;
 
           this.loading = true;
           this.config = {
@@ -2595,13 +2656,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this31.loadPage(x.page || 1);
+            return _this32.loadPage(x.page || 1);
           });
         }
       }, {
         key: "loadPage",
         value: function loadPage(num) {
-          var _this32 = this;
+          var _this33 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/data_mhs/list', {
             search: this.search,
@@ -2609,28 +2670,28 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             size: 10
           }).subscribe(function (x) {
             if (x.data.total_record === 0) {
-              _this32.nodata = true;
+              _this33.nodata = true;
             } else {
-              _this32.nodata = false;
-              _this32.pager = x.data;
-              _this32.pageOfItems = x.data.records;
-              _this32.config = {
+              _this33.nodata = false;
+              _this33.pager = x.data;
+              _this33.pageOfItems = x.data.records;
+              _this33.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
 
-            _this32.loading = false;
+            _this33.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this33 = this;
+          var _this34 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this33.loadPage(x.page || 1);
+            return _this34.loadPage(x.page || 1);
           });
         }
       }, {
@@ -2648,7 +2709,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getData",
         value: function getData(id) {
-          var _this34 = this;
+          var _this35 = this;
 
           if (id === '') {
             this.unhide = false;
@@ -2656,8 +2717,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           } else {
             this.http.get(this.uri + 'perpustakaan/api/v1/peminjaman/view/' + id).subscribe(function (x) {
               if (x.status === true) {
-                _this34.unhide = true;
-                _this34.infoReturn = x.data;
+                _this35.unhide = true;
+                _this35.infoReturn = x.data;
                 var Today = new Date();
                 var startDate = new Date(x.data.data_peminjaman.tanggal_peminjaman);
                 var endDate = new Date(x.data.data_peminjaman.tanggal_pengembalian);
@@ -2671,17 +2732,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 time = Math.round(time);
 
                 if (time <= 0) {
-                  _this34.infoTime = 'Tidak Terlambat';
-                  _this34.lateTime = false;
+                  _this35.infoTime = 'Tidak Terlambat';
+                  _this35.lateTime = false;
                 } else {
-                  _this34.infoTime = 'Terlambat ' + time + ' Hari';
-                  _this34.lateTime = true;
+                  _this35.infoTime = 'Terlambat ' + time + ' Hari';
+                  _this35.lateTime = true;
 
-                  _this34.toastr.showWarning('ID ' + ' terlambat ' + time + ' Hari', 'Warning!');
+                  _this35.toastr.showWarning('ID ' + ' terlambat ' + time + ' Hari', 'Warning!');
                 }
               } else {
-                _this34.unhide = false;
-                _this34.infoReturn = null;
+                _this35.unhide = false;
+                _this35.infoReturn = null;
               }
             });
           }
@@ -2689,23 +2750,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this35 = this;
+          var _this36 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/peminjaman/kembali', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this35.modalRef.hide();
+            _this36.modalRef.hide();
 
             if (x.status === true) {
-              _this35.toastr.showSuccess(x.message, 'Berhasil');
+              _this36.toastr.showSuccess(x.message, 'Berhasil');
 
-              _this35.unhide = false;
-              _this35.infoReturn = null;
+              _this36.unhide = false;
+              _this36.infoReturn = null;
             } else {
-              _this35.toastr.showError(x.message, 'Gagal');
+              _this36.toastr.showError(x.message, 'Gagal');
             }
 
-            _this35.ngOnInit();
+            _this36.ngOnInit();
           });
         }
       }, {
@@ -2727,13 +2788,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDownload",
         value: function onDownload() {
-          var _this36 = this;
+          var _this37 = this;
 
           this.http.get(this.uri + 'perpustakaan/api/v1/data_mhs/download', {
             responseType: 'blob'
           }).subscribe(function (res) {
             if (res) {
-              var url = window.URL.createObjectURL(_this36.returnBlob(res));
+              var url = window.URL.createObjectURL(_this37.returnBlob(res));
               window.open(url);
             }
           });
@@ -2741,7 +2802,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "openDownloadModal",
         value: function openDownloadModal(template) {
-          var _this37 = this;
+          var _this38 = this;
 
           this.modalRef = this.modalService.show(template);
           this.loadingDL = true;
@@ -2754,12 +2815,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
             if (x.status === true) {
               setTimeout(function () {
-                _this37.loadingDL = false;
+                _this38.loadingDL = false;
               }, 1000);
 
-              _this37.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
+              _this38.toastr.showSuccess('Data berhasil didapat', 'Berhasil');
             } else {
-              _this37.toastr.showError('Data gagal Diolah', 'Gagal');
+              _this38.toastr.showError('Data gagal Diolah', 'Gagal');
             }
           });
         }
@@ -2910,20 +2971,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onLogin",
         value: function onLogin() {
-          var _this38 = this;
+          var _this39 = this;
 
           this.loginSub = this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/login', this.loginObj).subscribe(function (x) {
             var account = x.data;
 
             if (x.status === true) {
-              _this38.toastr.showSuccess(x.message, 'Berhasil');
+              _this39.toastr.showSuccess(x.message, 'Berhasil');
 
               var enc = Object(src_app_shared_security_helper__WEBPACK_IMPORTED_MODULE_5__["dataEncryption"])(account);
               localStorage.setItem(_app_config_app_config__WEBPACK_IMPORTED_MODULE_4__["_app_config"].localstorage_prefix + 'user', enc);
 
-              _this38.router.navigate(['/dashboard']);
+              _this39.router.navigate(['/dashboard']);
             } else {
-              _this38.toastr.showError(x.message, 'Gagal');
+              _this39.toastr.showError(x.message, 'Gagal');
             }
           });
         }
@@ -3288,13 +3349,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onInput",
         value: function onInput(template) {
-          var _this39 = this;
+          var _this40 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/get', {
             id_mhs: this.object.mhs_id,
             id_buku: this.object.buku_id
           }).subscribe(function (x) {
-            _this39.infoReturn = x.data;
+            _this40.infoReturn = x.data;
 
             if (x.status === true) {
               var Today = new Date();
@@ -3310,22 +3371,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               time = Math.round(time);
 
               if (time <= 0) {
-                _this39.infoTime = 'Tidak Terlambat';
-                _this39.lateTime = false;
+                _this40.infoTime = 'Tidak Terlambat';
+                _this40.lateTime = false;
               } else {
-                _this39.infoTime = 'Terlambat ' + time + ' Hari';
-                _this39.lateTime = true;
+                _this40.infoTime = 'Terlambat ' + time + ' Hari';
+                _this40.lateTime = true;
 
-                _this39.toastr.showWarning('ID ' + _this39.infoReturn.detail_mhs.mhs_id + ' terlambat ' + time + ' Hari', 'Warning!');
+                _this40.toastr.showWarning('ID ' + _this40.infoReturn.detail_mhs.mhs_id + ' terlambat ' + time + ' Hari', 'Warning!');
               }
 
-              _this39.toastr.showSuccess(x.message, 'Berhasil');
+              _this40.toastr.showSuccess(x.message, 'Berhasil');
 
-              _this39.modalRef = _this39.modalService.show(template);
+              _this40.modalRef = _this40.modalService.show(template);
             } else {
-              _this39.toastr.showWarning(x.message, 'Perhatian!');
+              _this40.toastr.showWarning(x.message, 'Perhatian!');
 
-              _this39.ngOnInit();
+              _this40.ngOnInit();
             }
           });
         }
@@ -3349,20 +3410,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this40 = this;
+          var _this41 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/set', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this40.modalRef.hide();
+            _this41.modalRef.hide();
 
             if (x.status === true) {
-              _this40.toastr.showSuccess(x.message, 'Berhasil');
+              _this41.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this40.toastr.showError(x.message, 'Gagal');
+              _this41.toastr.showError(x.message, 'Gagal');
             }
 
-            _this40.ngOnInit();
+            _this41.ngOnInit();
           });
         }
       }]);
@@ -3490,7 +3551,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(ReturnpageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this41 = this;
+          var _this42 = this;
 
           this.loading = true;
           this.config = {
@@ -3499,13 +3560,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             totalItems: 0
           };
           this.route.queryParams.subscribe(function (x) {
-            return _this41.getReturnApproval(x.page || 1);
+            return _this42.getReturnApproval(x.page || 1);
           });
         }
       }, {
         key: "getReturnApproval",
         value: function getReturnApproval(num) {
-          var _this42 = this;
+          var _this43 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/adminlist', {
             id: '',
@@ -3514,18 +3575,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             size: 10
           }).subscribe(function (x) {
             if (x.data.records === null) {
-              _this42.nodata = true;
+              _this43.nodata = true;
             } else {
-              _this42.pager = x.data;
-              _this42.pageOfItems = x.data.records;
-              _this42.config = {
+              _this43.pager = x.data;
+              _this43.pageOfItems = x.data.records;
+              _this43.config = {
                 itemsPerPage: x.data.limit,
                 currentPage: x.data.page,
                 totalItems: x.data.total_record
               };
             }
 
-            _this42.loading = false;
+            _this43.loading = false;
           });
         }
       }, {
@@ -3558,20 +3619,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmitReturn",
         value: function onSubmitReturn(id) {
-          var _this43 = this;
+          var _this44 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/pengembalian/admin', {
             id_peminjaman: id
           }).subscribe(function (x) {
-            _this43.modalRef.hide();
+            _this44.modalRef.hide();
 
             if (x.status === true) {
-              _this43.toastr.showSuccess(x.message, 'Berhasil');
+              _this44.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this43.toastr.showError(x.message, 'Gagal');
+              _this44.toastr.showError(x.message, 'Gagal');
             }
 
-            _this43.ngOnInit();
+            _this44.ngOnInit();
           });
         }
       }, {
@@ -4174,7 +4235,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(UsermanagementComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this44 = this;
+          var _this45 = this;
 
           var acc = localStorage.getItem(_app_config_app_config__WEBPACK_IMPORTED_MODULE_7__["_app_config"].localstorage_prefix + 'user');
 
@@ -4197,7 +4258,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               totalItems: 0
             };
             this.route.queryParams.subscribe(function (x) {
-              return _this44.loadPage(x.page || 1);
+              return _this45.loadPage(x.page || 1);
             });
           } else {
             this.toastr.showWarning('Anda tidak memiliki akses untuk laman manajemen', 'Perhatian!');
@@ -4207,30 +4268,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "loadPage",
         value: function loadPage(num) {
-          var _this45 = this;
+          var _this46 = this;
 
           this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/list', {
             search: this.search,
             page: +num,
             size: 10
           }).subscribe(function (x) {
-            _this45.pager = x.data;
-            _this45.pageOfItems = x.data.records;
-            _this45.config = {
+            _this46.pager = x.data;
+            _this46.pageOfItems = x.data.records;
+            _this46.config = {
               itemsPerPage: x.data.limit,
               currentPage: x.data.page,
               totalItems: x.data.total_record
             };
-            _this45.loading = false;
+            _this46.loading = false;
           });
         }
       }, {
         key: "onSearch",
         value: function onSearch(searchInput) {
-          var _this46 = this;
+          var _this47 = this;
 
           this.route.queryParams.subscribe(function (x) {
-            return _this46.loadPage(x.page || 1);
+            return _this47.loadPage(x.page || 1);
           });
         }
       }, {
@@ -4254,21 +4315,21 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmit",
         value: function onSubmit(data) {
-          var _this47 = this;
+          var _this48 = this;
 
           if (this.inputUser.nama === '' && this.inputUser.username === '' && this.inputUser.password === '' && this.inputUser.role === ' ' && this.inputUser.email === '' && this.inputUser.Phone === '') {
             this.toastr.showError('Data yang dibutuhkan Kosong!', 'Gagal');
           } else {
             this.http.post(this.uri + 'perpustakaan/api/v1/usermanagement/create', data).subscribe(function (x) {
-              _this47.modalRef.hide();
+              _this48.modalRef.hide();
 
               if (x.status === true) {
-                _this47.toastr.showSuccess(x.message, 'Berhasil');
+                _this48.toastr.showSuccess(x.message, 'Berhasil');
               } else {
-                _this47.toastr.showError(x.message, 'Gagal');
+                _this48.toastr.showError(x.message, 'Gagal');
               }
 
-              _this47.ngOnInit();
+              _this48.ngOnInit();
             });
           }
         }
@@ -4282,20 +4343,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onUpdate",
         value: function onUpdate(data) {
-          var _this48 = this;
+          var _this49 = this;
 
           this.http.put(this.uri + 'perpustakaan/api/v1/usermanagement/update', data).subscribe(function (x) {
             console.log(x);
 
-            _this48.modalRef.hide();
+            _this49.modalRef.hide();
 
             if (x.status === true) {
-              _this48.toastr.showSuccess(x.message, 'Berhasil');
+              _this49.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this48.toastr.showError(x.message, 'Gagal');
+              _this49.toastr.showError(x.message, 'Gagal');
             }
 
-            _this48.ngOnInit();
+            _this49.ngOnInit();
           });
         }
       }, {
@@ -4307,20 +4368,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onDelete",
         value: function onDelete(id) {
-          var _this49 = this;
+          var _this50 = this;
 
           this.http["delete"](this.uri + 'perpustakaan/api/v1/usermanagement/delete/' + id).subscribe(function (x) {
-            _this49.modalRef.hide();
+            _this50.modalRef.hide();
 
             if (x.status === true) {
-              _this49.toastr.showSuccess(x.message, 'Berhasil');
+              _this50.toastr.showSuccess(x.message, 'Berhasil');
             } else {
-              _this49.toastr.showError(x.message, 'Gagal');
+              _this50.toastr.showError(x.message, 'Gagal');
             }
 
-            _this49.ngOnInit();
+            _this50.ngOnInit();
 
-            _this49.deleteID = '';
+            _this50.deleteID = '';
           });
         }
       }, {
